@@ -1,0 +1,626 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-size: cover;
+    background-color: #4c1796;
+    overflow: hidden;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(87, 29, 29, 0.116);
+    content: "";
+    z-index: -1;
+  }
+  .overlay2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(46, 29, 87, 0.2);
+    content: "";
+    z-index: -1;
+  }
+@font-face {
+    font-family: 'Retro';
+    src: url(Retro\ Gaming.ttf);
+}
+nav{
+    width: auto;
+    font-family: 'Retro', monospace;
+}
+nav::after{
+    content: '';
+    clear: both;
+    display: table;
+}
+nav .logo{
+    float: right;
+    color: white;
+    margin-top: 1vh;
+    font-size: 40px;
+    font-weight: 600;
+    padding-left: 25px;
+    padding-right: 25px;
+    text-decoration: none;
+    list-style: none;
+}
+nav ul{
+    float: left;
+    list-style: none;
+    
+}
+nav ul li{
+    float: left;
+    display: block;
+    margin:1vh;
+
+}
+nav ul li a{
+    font-weight: bold;
+    color: rgb(56, 187, 187);
+    text-decoration: none;
+    line-height: 50px;
+    font-size: 30px;
+    padding: 10px 10px;
+    justify-content: center;
+    border-radius: 2vh ;
+}
+nav ul li a:hover{
+    transition: .4s;
+    color:#c72075;
+    border-radius: 2vh ;
+    text-shadow: #ffffff 2px 2px;
+
+}
+nav ul ul{
+    position: absolute;
+    top: 60px;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s;
+}
+nav ul li:hover > ul{
+    top: 60px;
+    opacity: 1;
+    visibility: visible;
+    background: #cdcaca1b;
+}
+nav ul ul li{
+    position: relative;
+    margin: 0;
+    float: none;
+}
+nav ul li ul li a{
+    width: auto;
+}
+nav li{
+    list-style: none;
+}
+.td{
+    display: grid;
+    margin: 2vh;
+    grid-template-rows: auto auto auto auto;
+    width: 45%;
+    align-items: center;
+    grid-gap: .2vh;
+}
+.imagprin{
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+    padding: 1vh;
+}
+.tit{
+    /* #c72075, #3C0E65 */
+    margin-left: 20px;
+    margin-top: 20px;
+    font-size: 80px;
+    font-family: 'Retro', sans-serif;
+    color: #ac3ef1d0;
+    text-shadow:  #3C0E65 1vh 1vh, #ffffff -1vh -1vh;
+}
+.ini{
+    color:rgb(233, 255, 255);
+    padding: 10px;
+    width: 500px;
+    font-family: 'Retro', sans-serif;
+    font-size: 27px;
+    word-spacing: 1vh;
+    margin-left: 20px;
+    border: #3C0E65 solid .4vh;
+    text-shadow: #892bc4  .5vh .4vh, rgba(0, 0, 0, 0.788) -.3vh -.3vh 1px;
+    background-color: #c1afdf;
+    box-shadow: #f5ebfdce 1vh .7vh;
+    border-radius: 2vh;
+}
+.ahora{
+    margin-left: 20px;
+    font-family: 'Retro', monospace;
+    font-size: 40px;
+    padding: 10px;
+    color: rgb(255, 255, 255);
+	text-shadow: 0px .5vh 0 rgb(233, 55, 114);
+}
+.start{
+    background-color: #c72075;
+    width: 200px;
+    height: 40px;
+    margin-left: 20vh;
+    font-family: 'Retro', monospace;
+    font-size: 23px;
+    color: aliceblue;
+    border: black 3.5px solid;
+    margin-top: 10px;
+    transition: .5s;
+}
+.start:hover{
+    transition: .5s;
+    background-color:aqua;
+    color: black;
+    text-shadow: 0px 2px 4px rgb(24, 26, 65);
+    box-shadow: #ffffff 5px 5px 2px 2px;
+    font-size:25px;
+}
+.tayuda{
+    text-align: center;
+    margin-top: 0;
+}
+.ayudar{
+    background-color: #c72075;
+    background-image: linear-gradient(to right, #ad3ef1 , #3C0E65);
+    border: #3C0E65 solid 2px;
+    width: 100%;
+    padding: 2%;
+    color: #ffffff;
+    font-family: 'Retro', sans-serif;
+    font-size: 23px;
+    font-weight: 100;
+}
+.cuadritos {
+    width: 200vh;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    justify-content: center;
+    margin: auto;
+    margin-top: 20px;
+    height: 50vh;
+    grid-gap: 5vh;
+    color:#3C0E65;
+    font-family: 'Retro', sans-serif;
+}
+.cuadritos h2{
+    font-size: 20px;
+    color:rgb(190, 17, 141);
+    text-shadow: #ffffff -2px -3px;
+}
+/* #4A0074  #B131FA */
+.cuadritos h4{
+    font-family: 'Retro', monospace;
+    font-size: 18px;
+    color:#4A0074;
+    text-shadow: #efe6ff .5vh .3vh;
+    margin-top: 2vh;
+    text-align:left;
+}
+.btn {
+    margin: 2vh;
+    margin-bottom: 0;
+    padding: 1vh;
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    font-family: 'Retro', monospace;
+    width: 40vh;
+    height: 20%;
+    font-size: 20px;
+    border: solid;
+}
+.btn a{
+    color: white;
+  }
+.btn:hover {
+    background-position: right center;
+    box-shadow: #666161 3px 3px;
+}
+.btn-2 {
+    background-image: linear-gradient(to right, rgba(187, 35, 144, 0.863) 0%, #703697 51%, rgb(119, 205, 255) 100%);
+}
+.c1{
+    background-image: linear-gradient(to right, #FCF5EC , #d3bdf6); 
+    border-radius: 2vh;
+    padding: 8vh;
+    padding-top: 2vh;
+    box-shadow: #ffffff 3px 5px;
+    border: #3C0E65 solid 1.5px;
+}
+.c2{
+    background-image: linear-gradient(to right, #FCF5EC , #d3bdf6); 
+    border-radius: 2vh;
+    padding: 8vh;
+    padding-top: 2vh;
+    box-shadow: #ffffff 3px 5px;
+    border: #3C0E65 solid 1.5px;
+
+}
+.c3{
+    background-image: linear-gradient(to right, #FCF5EC , #d3bdf6); 
+    border-radius: 2vh;
+    padding-top: 2vh;
+    padding: 8vh;
+    box-shadow: #ffffff 3px 5px;
+    border: #3C0E65 solid 1.5px;
+
+}
+.tdnoso{
+    text-align: center;
+    color:#eee;
+    font-family: 'Retro', monospace;
+    font-size: 30px;
+    width: 190vh;
+    margin: auto;
+    margin-top: 3%;
+    text-shadow: #3b3b3b 2px 4px;
+    border-radius: 2vh;
+}
+.tdnoso img{
+    width: 40vh;
+    border-radius: 5vh;
+    border: #3C0E65 solid .5vh;
+    box-shadow: #eee 1vh .5vh;
+}
+.contac{
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: auto;
+    padding: 20vh;
+    font-family: Retro;
+}
+.principal a[href="Página principal.html"],
+.ayuda a[href="Ayuda.html"],
+.nosotros a[href="Nosotros.html"],
+.contactenos a[href="Contactenos.html"] {
+  color: rgb(190, 17, 141);
+  text-shadow: #ffffff 2px 2px;
+}
+.fo{
+    background-image: linear-gradient(to right, #FCF5EC , #d3bdf6); 
+    border-radius: 2vh;
+    border: #3C0E65 solid .5vh;
+    box-shadow: #eeeeeeb4 1vh 1vh;
+    margin: 0;
+    width: 60vh;
+    padding: 5vh;
+}
+.fo h2{
+    color: #c72075;
+    text-shadow: aliceblue 3px 3px;
+}
+.fo p{
+    color:#4A0074;
+    font-size: 20px;
+}
+.fo input{
+    background-color: whitesmoke;
+    margin: 1vh;
+}
+.hab h1{
+    color:#c72075;
+    text-shadow: #eee .5vh .3vh;
+    font-size: 42px;
+}
+.hab h3{
+    padding: 2vh;
+    font-size: 30px;
+}
+.hab{
+    color: white;
+}
+.hab img{
+    padding: 1vh;
+}
+/* Nombre Email Mensaje Enviar */ 
+
+.ins{
+    background-color: #c72075;
+    background-image: linear-gradient(to right,#3C0E65  , #ad3ef1);
+    border: #3C0E65 solid 2px;
+    width: 100%;
+    padding: 2%;
+    color: #ffffff;
+    font-family: 'Retro', sans-serif;
+    font-size: 23px;
+    font-weight: 100;
+}
+.cuadritos h2{
+        font-size: 26px;
+        color:rgb(190, 17, 141);
+        text-shadow: #ffffff -2px -3px;
+    }
+    /* #4A0074  #B131FA */
+.cuadritos h4{
+    font-family: 'Retro', monospace;
+    font-size: 20px;
+    color:#4A0074;
+    text-shadow: #efe6ff .5vh .3vh;
+    margin-top: 2vh;
+    text-align:left;
+}
+.cuadritos video{
+    margin-top: 1vh;
+    height: 25vh;
+    border:#3C0E65 solid 1vh;
+}
+.grinoso{
+    font-family: Retro;
+
+}
+.grinoso .tnoso{
+    text-align: center;
+    background-color: #572c7cd9;
+    text-shadow:#3C0E65 3px 3px;
+    height: 15vh;
+    padding: 4vh;
+    margin: auto;
+    font-size: 40px;
+}
+.grinoso .cuad{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    place-content: center;
+    grid-gap: 20vh;
+    padding: 2vh;
+    text-align: center;
+}
+.cua1{
+    padding: 2vh;
+    background-color: #ffffff;
+    border: #4A0074 solid .5vh;
+    box-shadow: #d3bdf6 2vh 2vh;
+    text-shadow: #3C0E65 3px 3px;
+}
+.cua2{
+    padding: 2vh;
+    background-color: #ffffff;
+    border: #4A0074 solid .5vh;
+    box-shadow: #d3bdf6 2vh 2vh;
+    text-shadow: #3C0E65 3px 3px;
+}
+.cua3{
+    padding: 2vh;
+    background-color: #ffffff;
+    border: #4A0074 solid .5vh;
+    box-shadow: #d3bdf6 2vh 2vh;
+    text-shadow: #3C0E65 3px 3px;
+}
+.grinoso .cuad p{
+    color: #c1afdf;
+    font-size: 40px;
+}
+.grinoso img{
+    width: 40vh;
+    height: 40vh;
+    object-fit: cover;
+}
+.contac{
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: auto;
+    padding:8vh;
+    font-family: Retro;
+}
+.fo input{
+    background-color: whitesmoke;
+    margin: 1vh;
+    width: 100%;
+    height: 5vh;
+}
+.grinoso h2{
+    color: #c1afdf;
+}
+@media only screen and (min-width: 1360px) and (min-height: 768px) {
+    body{
+        overflow: hidden;
+    }
+    nav ul li a{
+        font-size: 54px;
+    }
+    nav .logo{
+        position: absolute;
+        right: 1vh;
+    }
+    nav ul li:hover > ul{
+        top: 80px;
+        opacity: 1;
+        visibility: visible;
+    }
+    .ayudar{
+        background-color: #c72075;
+        background-image: linear-gradient(to right, #ad3ef1 , #3C0E65);
+        border: #3C0E65 solid 2px;
+        height: 22vh;
+        overflow: hidden;
+        padding: 2.5%;
+        color: #ffffff;
+        font-family: 'Retro', sans-serif;
+        font-size: 23px;
+        font-weight: 100;
+    }
+    .cuadritos {
+        width: 200vh;
+        display: grid;
+        grid-template-columns: 24% 24% 24%;
+        justify-content: center;
+        margin: auto;
+        margin-top: 20px;
+        height: 50vh;
+        grid-gap: 5vh;
+        color:#3C0E65;
+        font-family: 'Retro', sans-serif;
+    }
+    .cuadritos h2{
+        font-size: 26px;
+        color:rgb(190, 17, 141);
+        text-shadow: #ffffff -2px -3px;
+    }
+    /* #4A0074  #B131FA */
+    .cuadritos h4{
+        font-family: 'Retro', monospace;
+        font-size: 23px;
+        color:#4A0074;
+        text-shadow: #efe6ff .5vh .3vh;
+        margin-top: 2vh;
+        text-align:left;
+    }
+    .btn {
+        margin: 2vh;
+        margin-bottom: 0;
+        padding: 1vh;
+        text-align: center;
+        transition: 0.5s;
+        color: white;
+        box-shadow: 0 0 20px #eee;
+        border-radius: 10px;
+        font-family: 'VT323', monospace;
+        width: 35vh;
+        height: 20%;
+        font-size: 26px;
+        border: solid;
+    }
+    .btn-2 {
+        background-image: linear-gradient(to right, rgba(187, 35, 144, 0.863) 0%, #703697 51%, rgb(119, 205, 255) 100%);
+        margin: -1vh;
+        margin-top: 2vh;
+    }
+    .fo{
+        background-image: linear-gradient(to right, #FCF5EC , #d3bdf6); 
+        border-radius: 2vh;
+        border: #3C0E65 solid .5vh;
+        box-shadow: #eeeeeeb4 1vh 1vh;
+        margin: auto;
+        padding: 4vh;
+        width: 90%;
+    }
+    .fo h2{
+        color: #c72075;
+        text-shadow: aliceblue 3px 3px;
+        font-size: 30px;
+        
+    }
+    .fo p{
+        color:#4A0074;
+        font-size: 25px;
+        
+    }
+    .fo input{
+        background-color: whitesmoke;
+        margin: 1vh;
+        width: 100%;
+        height: 5vh;
+    }
+    .hab h1{
+        color:#c72075;
+        text-shadow: #eee .5vh .2vh;
+        font-size: 40px;
+    }
+    .hab h3{
+        padding: 2vh;
+    }
+    .hab{
+        color: white;
+    }
+    .hab img{
+        padding: 1vh;
+    }
+    .fo .btn-2{
+        margin-left: 5vh;
+        font-size: 30px;
+    }
+    .hab h1{
+        color:#c72075;
+        text-shadow: #eee .5vh .2vh;
+        font-size: 70px;
+    }
+    .hab h3{
+        font-size: 40px;
+        padding: 1vh;
+        width: 80vh;
+
+    }
+    .hab{
+        color: white;
+    }
+    .hab img{
+        margin-left: 2vh;
+        height: 12vh;
+    }
+    .contac{
+        display: grid;
+        grid-template-columns: auto auto;
+        margin: auto;
+        padding: 10vh;
+        font-family: Retro;
+    }
+    .td{
+        display: grid;
+        margin: 2vh;
+        grid-template-rows: auto auto auto auto;
+        width: 45%;
+        align-items: center;
+        grid-gap: .2vh;
+    }
+    .imagprin{
+        position: absolute;
+        bottom: 5px;
+        right: 20px;
+        padding: 1vh;
+    }
+    .tit{
+        /* #c72075, #3C0E65 */
+        margin-left: 20px;
+        margin-top: 20px;
+        font-size: 110px;
+        font-family: 'Retro', sans-serif;
+        color: #ac3ef1d0;
+        text-shadow:  #3C0E65 1vh 1vh, #ffffff -1vh -1vh;
+    }
+    .ini{
+        color:rgb(233, 255, 255);
+        padding: 2vh;
+        width: 70vh;
+        font-family: 'Retro', sans-serif;
+        font-size: 35px;
+        word-spacing: 2vh;
+        margin-left: 20px;
+    }
+    .ahora{
+        margin-left: 20px;
+        font-family: 'Retro', monospace;
+        font-size: 55px;
+        padding: 10px;
+        color: rgb(255, 255, 255);
+        text-shadow: 0px .5vh 0 rgb(233, 55, 114);
+    }
+    .start{
+        background-color: #c72075;
+        width: 35vh;
+        height: 5vh;
+        margin-left: 20vh;
+        font-family: 'Retro', monospace;
+        font-size: 23px;
+        color: aliceblue;
+        border: black 3.5px solid;
+        margin-top: 10px;
+        transition: .5s;
+    }
+}

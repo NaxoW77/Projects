@@ -1,0 +1,57 @@
+<html>
+<body style="backdrop-filter:blur(20px);background-image:url(Img/StBG.png);background-size:cover;border:25px inset black;margin:0;">
+<link rel="stylesheet" href="Game.css">
+
+    <h1 id="Pt" style="position: fixed;left:750px;display:none;transition:3s;z-index:10;">Puntaje: <span id='P1'>0</span> | Puntaje total: <span id='P2'>0</span></h1>
+    <section id="game" style="display: none;transition:1.3s">
+        <p id="staticBG" style="margin:0;z-index:-50;position:fixed;top:-25px;left:-30px;background-image: url(Img/StaticBG.png);background-position-y:-330px;background-size:cover"></p>
+        <p id="Parallax0" style="margin:0;z-index:-49;position:fixed;top:-150px;left:-30px;background-image: url(Img/Parallax0.png);background-size:cover"></p>
+        <p id="Parallax1" style="margin:0;z-index:-48;position:fixed;top:-25px;left:-30px;background-image: url(Img/Parallax1.png);background-size:cover"></p>
+        <p id="Parallax2" style="margin:0;z-index:-47;position:fixed;top:-25px;left:-30px;background-image: url(Img/Parallax2.png);background-size:cover"></p>
+        
+
+
+        <h1 id="Rn" style="position: fixed;top:500px;left:300px"><img id="RnI" style="width: 100px;image-rendering: pixelated;" src="Img/Rn.png" alt=""></h1>
+    
+        <h2 id="Ct1" style="position: fixed;top:500px;left:1980px"><img id="CtI" style="width: 100px;image-rendering: pixelated;" src="Img/Ct3.png" alt=""></h1> 
+    </section>
+
+    <section id="gameover" style="z-index:10;text-align: center;font-size:75px;position:fixed;top:150px;left:400px;display:none;transition:3s;">
+        <h1>Has perdido.</h1>
+        <br>
+        <br>
+        <h2 style="font-size:75px;">Pulsa "R" para reintentar.<br>Pulsa "X" para borrar tu record.</h2>
+    </section>
+
+    <audio id="IntroS" src="Img/Intro.wav"></audio>
+    <audio id="JumpS" src="Img/Jump.wav"></audio>
+    <audio id="SpawnS" src="Img/Spawn.wav"></audio>
+    <audio id="CrashS" src="Img/Crash.wav"></audio>
+    <audio id="DeleteS" src="Img/Delete.wav"></audio>
+    
+
+        <h1 id="stMsg" style="position: fixed;top:250px;left:500px;font-size:75px;animation:fadeIn 1.2s">Pulsa "ENTER" para iniciar. <span style="font-size:50px;"><br>O pulsa "Q" para salir</span></h1>
+        <h1 id="jpMsg" style="position: fixed;top:700px;left:500px;font-size:75px;transition:3s;animation:fadeIn 1.2s;display:none">Pulsa ESPACIO para saltar.</h1>
+        <script src="Game.js"></script>
+        <script>
+            document.body.style.width = `${window.outerWidth-50}px`
+            document.body.style.height = `${window.outerHeight-120}px`
+
+            document.getElementById("staticBG").style.width = `${10+window.outerWidth}px`;document.getElementById("staticBG").style.height = `${window.outerHeight}px`
+            
+            document.getElementById("Parallax0").style.width = `${10+window.outerWidth}px`;document.getElementById("Parallax0").style.height = `${window.innerHeight}px`
+        
+            document.getElementById("Parallax1").style.width = `${10+window.outerWidth}px`;document.getElementById("Parallax1").style.height = `${window.innerHeight}px`
+            
+            document.getElementById("Parallax2").style.width = `${10+window.outerWidth}px`;document.getElementById("Parallax2").style.height = `${window.innerHeight}px`
+            
+            document.getElementById("Rn").style.top=`${(window.outerHeight/2)}px`
+            document.getElementById("Ct1").style.top=`${(window.outerHeight/2)}px`
+
+            document.getElementById("Pt").style.left=`${(window.outerWidth/2)-215}px`;document.getElementById("Pt").style.top=`${(window.outerHeight/50)}px`
+            document.getElementById("stMsg").style.left=`${(window.outerWidth/2)-500}px`;document.getElementById("stMsg").style.top=`${(window.outerHeight/4)}px`
+            document.getElementById("jpMsg").style.left=`${(window.outerWidth/2)-500}px`;document.getElementById("jpMsg").style.top=`${(window.outerHeight-350)}px`
+            document.getElementById("gameover").style.left=`${(window.outerWidth/2)-570}px`;document.getElementById("gameover").style.top=`${(window.outerHeight/16)}px`
+        </script>
+    </body>
+    </html>

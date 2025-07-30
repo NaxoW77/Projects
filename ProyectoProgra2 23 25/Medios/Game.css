@@ -1,0 +1,31 @@
+html{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    overflow: hidden;
+}
+
+@keyframes fadeIn{
+    from {opacity:0%}
+    to {opacity:100%}
+}
+@keyframes fadeOut{
+    from {opacity:100%}
+    to {opacity:0%}
+}
+@keyframes Y {
+    from {color:limegreen}
+    to {color:black}
+}
+@keyframes N {
+    from {color:red}
+    to {color:black}
+}
+
+@keyframes N2 {
+    from {color:red;transform: scale(175%)}
+    to {color:black}
+}
+@keyframes J {
+    from {}
+    50% {color:blue}
+    to {}
+}
