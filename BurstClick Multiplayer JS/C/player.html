@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>BurstClick</title>
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css">
+</head>
+
+<body>
+
+  <h1 id="statusMsg">Waiting for players...</h1>
+  <h1 id="statusMsg2">Waiting for players...</h1>
+
+  <section class="waitRoom" style="display: none;">
+
+    <div class="waitRoomPlayers">
+      <div class="waitBox">
+        <div class="waitBoxText p1">Player 1</div>
+        <div id="p1Status" class="waitBoxSubText">Offline</div>
+        <div class="bestScoresHandler">
+          <div id="p1BestScore" class="bestScore"><b>Highest score</b> <br> <label>Waiting...</label></div>
+          <div id="p1BestCPS" class="bestCPS"><b>Highest CPS</b> <br> <label>Waiting...</label></div>
+        </div>
+        <div id="p1Ready" class="waitBoxReadyStatus">Waiting...</div>
+      </div>
+
+      <div class="waitBox">
+        <div class="waitBoxText p2">Player 2</div>
+        <div id="p2Status" class="waitBoxSubText">Offline</div>
+        <div class="bestScoresHandler">
+          <div id="p2BestScore" class="bestScore"><b>Highest score</b> <br> <label>Waiting...</label></div>
+          <div id="p2BestCPS" class="bestCPS"><b>Highest CPS</b> <br> <label>Waiting...</label></div>
+        </div>
+        <div id="p2Ready" class="waitBoxReadyStatus">Waiting...</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="playRoom" style="display: none;">
+    <div class="scores-handler">
+      <div class="p1Box">
+        <div class="p1Text">Player 1</div>
+        <div class="leftScoreText p1ScoreText">
+          <div>0 Clicks</div>
+        </div>
+        <div class="leftCPSText p1CPSText">
+          <div>0 CPS</div>
+        </div>
+      </div>
+      <div class="p2Box">
+        <div class="p2Text">Player 2</div>
+        <div class="rightScoreText p2ScoreText">
+          <div>0 Clicks</div>
+        </div>
+        <div class="rightCPSText p2CPSText">
+          <div>0 CPS</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bar-handler">
+      <div class="bar">
+        <div class="p1Score">
+          <div class="p1ScoreVal">50%</div>
+        </div>
+        <div class="separator"></div>
+        <div class="p2Score">
+          <div class="p2ScoreVal">50%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="keybd-handler">
+      <div class="keybd">
+      </div>
+    </div>
+  </section>
+
+</body>
+
+<script src="/js"></script>
+
+</html>
