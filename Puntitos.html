@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: black;
+        }
+        div{
+            margin:0;
+            width: 10px;
+            height: 10px;
+            position: fixed;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;z-index: -10;color:white;text-shadow: 0px 0px 3px black;" id="id1">0/0</h1>
+</body>
+<script>
+    var num = 0;
+    var lim = parseInt(window.prompt("Ingrese un número:"))-1||0
+    console.log(lim)
+    let iv1 = setInterval(function(){
+        if(num==lim){
+            clearInterval(iv1)
+        }
+
+        var xx = Math.round(Math.random()*1920)
+        var yy = Math.round(Math.random()*1080)
+
+        var r = 32+Math.round(Math.random()*244)
+        var g = 32+Math.round(Math.random()*244)
+        var b = 32+Math.round(Math.random()*244)
+    var newDiv = document.createElement("div");
+    newDiv.style.cssText = `left:${xx}px;top:${yy}px;background-color: rgb(${r},${g},${b});z-index:-1`
+    document.body.appendChild(newDiv)
+    document.getElementById("id1").innerHTML=`${num+1}/${lim+1}`; 
+    num++;
+    },1)
+        
+    
+</script>
+</html>

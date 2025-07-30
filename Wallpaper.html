@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        table{
+            margin: 0;
+            background-color: black;
+            width: 1920px;
+            height: 1080px;
+            border-spacing: 0px;
+        }
+        th{
+            background-color: gray;
+
+        }
+    </style>
+</head>
+<body onload="resize();" onresize="resize()" onkeypress="keyP(event)">
+    <table id="table">
+
+    </table>
+</body>
+<script>
+    var num = 100;
+    var nums = []
+    for(var l = 0; l<num;l++){
+        nums.push(l+1);
+    }
+
+    var table = document.getElementById("table");
+    function resize(){
+    table.style.width = window.innerWidth+"px";
+    table.style.height = window.innerHeight+"px";
+    }
+
+    for(var x = 0; x<num;x++){
+        var tabRow = document.createElement("tr");
+        tabRow.id = `R${x}`;
+
+        for(var y = 0; y<num;y++){
+            var tabCol = document.createElement("th");
+            tabCol.id = `C${x}|${y}`;
+            tabRow.appendChild(tabCol);
+        }
+        table.appendChild(tabRow);
+    }
+
+    function it(x,y,clr){
+        document.getElementById(`C${y-1}|${x-1}`).style.backgroundColor=clr;
+    }
+
+    function start(dir,time,colr){
+        
+        var r = 32 + Math.round(Math.random() * 224);
+        var g = 32 + Math.round(Math.random() * 224);
+        var b = 32 + Math.round(Math.random() * 224);
+        
+        var colr = `rgb(${r},${g},${b})`
+        var ctrl = 1;
+        testest()
+        function testest(){
+        switch(dir){
+            case "left":
+                nums.forEach((each) => {
+                    document.getElementById(`C${each-1}|${ctrl-1}`).style.backgroundColor=colr;
+                });
+            break;
+                
+            case "down":
+                nums.forEach((each) => {
+                    document.getElementById(`C${ctrl-1}|${each-1}`).style.backgroundColor=colr;
+                });
+            break;
+            
+            case "right":
+                nums.forEach((each) => {
+                    document.getElementById(`C${each-1}|${num-ctrl}`).style.backgroundColor=colr;
+                });
+            break;
+            
+            case "up":
+                nums.forEach((each) => {
+                    document.getElementById(`C${num-ctrl}|${each-1}`).style.backgroundColor=colr;
+                });
+            break;
+        }
+        ctrl++;
+        if(ctrl<=num){
+            setTimeout(testest,time);
+        }
+    }
+    }
+
+    var deftime = 1;
+    function keyP(ky){
+        if(ky.key == "w"){
+            start("up",deftime);
+        }
+        if(ky.key == "s"){
+            start("down",deftime);
+        }
+        if(ky.key == "d"){
+            start("left",deftime);
+        }
+        if(ky.key == "a"){
+            start("right",deftime);
+        }
+    }
+</script>
+</html>

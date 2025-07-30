@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="set()" onresize="window.location.reload()" style="margin:0;background:black;overflow:hidden">
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    var winX, winY = 0;
+    var posX, posY = 0;
+    var poles = [];
+    var on = 0;
+    var orient = 25;
+    var flipOrient = 0;
+    var frontTime = 25;
+    var backTime = -25;
+    var steps = 16;
+    var jump = 5;
+
+    const canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    function set() {
+        winX = parseInt(window.innerWidth);
+        canvas.width = winX;
+        winY = parseInt(window.innerHeight)
+        canvas.height = winY;
+        poles = [];
+        genPoles();
+        on = 0;
+        on = 1;
+        requestAnimationFrame(animate);
+    }
+    document.addEventListener("mousemove", function (ev) {
+        posX = ev.clientX;
+        posY = ev.clientY;
+    })
+
+    class Pole {
+        constructor(xPosition, yPosition) {
+            this.xPosition = xPosition;
+            this.yPosition = yPosition;
+            this.speed = (2 + Math.round(Math.random() * 7));
+            this.rotation = Math.round(Math.random()*2);
+        }
+
+        nextStep() {
+            var x = this.xPosition;
+            var y = this.yPosition;
+            var s = this.speed;
+            
+            if(this.rotation==0){
+            switch (true) {
+                case (x < winX && y == winY):
+                    x += s;
+                    break;
+
+                case (x == winX && y > 0):
+                    y -= s;
+                    break;
+
+                case (y == 0 && x > 0):
+                    x -= s;
+                    break;
+
+                case (x == 0 && y < winY):
+                    y += s;
+                    break;
+            }
+            if (x > winX) x = winX;
+            if (x < 0) x = 0;
+            if (y > winY) y = winY;
+            if (y < 0) y = 0;
+        }else{
+            switch (true) {
+                case (x < winX && y == 0):
+                    x += s;
+                    break;
+
+                case (x == winX && y < winY):
+                    y += s;
+                    break;
+
+                case (y == winY && x > 0):
+                    x -= s;
+                    break;
+
+                case (x == 0 && y > 0):
+                    y -= s;
+                    break;
+            }
+            if (x > winX) x = winX;
+            if (x < 0) x = 0;
+            if (y > winY) y = winY;
+            if (y < 0) y = 0;
+        }
+            this.xPosition = x;
+            this.yPosition = y;
+        }
+    }
+
+    function genPoles() {
+        for (var z = 0; z < (7 + Math.round(Math.random() * 7)); z++) {
+            var xP, yP = 0;
+            switch (1 + Math.floor(Math.random() * 4)) {
+                case 1:
+                    xP = 0;
+                    yP = Math.round(Math.random() * winY);
+                    break;
+
+                case 2:
+                    xP = Math.round(Math.random() * winX);
+                    yP = 0;
+                    break;
+
+                case 3:
+                    xP = winX;
+                    yP = Math.round(Math.random() * winY);
+                    break;
+
+                case 4:
+                    xP = Math.round(Math.random() * winX);
+                    yP = winY;
+                    break;
+            }
+            poles.push(new Pole(xP, yP))
+        }
+    }
+
+    var colors = ["#9F00FFAA", "#9F00FFAA", "#00FFFF9A", "#00FFFF9A"];
+    function animate() {
+        canvas.height = canvas.height;
+        if (flipOrient == 0 && orient > backTime) {
+            orient--;
+        } else {
+            flipOrient = 1;
+            frontTime = 5 + Math.floor(Math.random() * 30);
+        }
+        if (flipOrient == 1 && orient < frontTime) {
+            orient++;
+        } else {
+            flipOrient = 0;
+            backTime = Math.floor(Math.random() * -30) - 5;
+        }
+        for (var x in poles) {
+            var poleX = poles[x].xPosition;
+            var poleY = poles[x].yPosition;
+
+            ctx.lineWidth = Math.floor(Math.random() * 2) == 5 ? 15  : Math.floor(Math.random() * 2) == 1 ? 15 : 50;
+            
+            ctx.strokeStyle = colors[Math.floor(Math.random() * colors.length)]
+
+
+            ctx.beginPath();
+
+            var difX = (posX - poleX)
+            var difY = (posY - poleY)
+            var actX = poleX;
+            var actY = poleY;
+            ctx.moveTo(poleX, poleY);
+
+            for (var w = 1; w <= steps; w++) {
+                orient = 0 - orient;
+                ctx.bezierCurveTo(actX, actY, actX - (difX ? orient : orient) * jump, actY - (difY ? orient : 0) * jump, actX + difX / steps, actY + difY / steps);
+                actX += difX / steps;
+                actY += difY / steps;
+            }
+            ctx.stroke();
+            poles[x].nextStep();
+        }
+
+        if (on == 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+</script>
+
+</html>

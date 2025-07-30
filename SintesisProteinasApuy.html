@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            text-align: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        table{
+            margin: 0 auto;
+            margin-top: 25px;
+            border:3px solid black;
+        }
+        th{
+            border: 1px solid gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ingrese la cadena de ADN</h1>
+    <input type="text" id="cadena">
+
+    <button onclick="CL()">Calcular</button>
+
+    <table id="table" style="display: none;">
+        <thead>
+            <tr>
+                <th>Cadena inicial</th>
+                <th>Cadena complementaria</th>
+                <th>Código genético</th>
+                <th>Nombre del código</th>
+            </tr>
+        </thead>
+        <tbody id="tBody">
+        </tbody>
+    </table>
+</body>
+<script>
+    const cods = [
+    'UUU', 'UUC', //Phe
+    'UUA', 'UUG', 'CUU', 'CUC', 'CUA', 'CUG', //Leu
+    'AUU', 'AUC', 'AUA', //Ile
+    'AUG', //Met
+    'GUU', 'GUC', 'GUA', 'GUG', //Val
+    'UCU', 'UCC', 'UCA', 'UCG', //Ser
+    'CCU', 'CCC', 'CCA', 'CCG', //Pro
+    'ACU', 'ACC', 'ACA', 'ACG', //Thr
+    'GCU', 'GCC', 'GCA', 'GCG', //Ala
+    'UAU', 'UAC', //Tyr
+    'UAA', 'UAG', //Stop
+    'CAU', 'CAC', //His
+    'CAA', 'CAG', //Gln
+    'AAU', 'AAC', //Asn
+    'AAA', 'AAG', //Lys
+    'GAU', 'GAC', //Asp
+    'GAA', 'GAG', //Glu
+    'UGU', 'UGC', //Cys
+    'UGA', //Stop
+    'UGG', //Trp
+    'CGU', 'CGC', 'CGA', 'CGG', //Arg
+    'AGU', 'AGC', //Ser
+    'AGA', 'AGG', //Arg
+    'GGU', 'GGC', 'GGA', 'GGG' //Gly
+    ];
+
+    const amin = [
+    "Phe Fenilalanina", "Phe Fenilalanina",
+    "Leu Leucina", "Leu Leucina", "Leu Leucina", "Leu Leucina", "Leu Leucina","Leu Leucina",
+    "Ile Isoleucina", "Ile Isoleucina", "Ile Isoleucina",
+    "Met Metionina-Inicio",
+    "Val Valina", "Val Valina", "Val Valina", "Val Valina",
+    "Ser Serina", "Ser Serina", "Ser Serina", "Ser Serina",
+    "Pro Prolina", "Pro Prolina", "Pro Prolina", "Pro Prolina",
+    "Thr Treolina", "Thr Treolina", "Thr Treolina", "Thr Treolina",
+    "Ala Alanina", "Ala Alanina", "Ala Alanina", "Ala Alanina",
+    "Tyr Tirosina", "Tyr Tirosina",
+    "Stop Fin de cadena", "Stop Fin de cadena",
+    "His Histidina", "His Histidina",
+    "Gln Glutamina", "Gln Glutamina",
+    "Asn Asparagina", "Asn Asparagina",
+    "Lys Lisina", "Lys Lisina",
+    "Asp Aspartato", "Asp Aspartato",
+    "Glu Glutamato", "Glu Glutamato",
+    "Cys Cisteína", "Cys Cisteína",
+    "Stop Final ",
+    "Trp Triptófano",
+    "Arg Arginina", "Arg Arginina", "Arg Arginina", "Arg Arginina",
+    "Ser Serina", "Ser Serina",
+    "Arg Arginina", "Arg Arginina",
+    "Gly Glicina", "Gly Glicina", "Gly Glicina", "Gly Glicina"
+    ]
+
+    function CL(){
+        var cdn = document.getElementById("cadena").value.split("");
+
+        var splitCdn = "";
+        var ctrl = 1;
+        for(var x = 0; x<cdn.length;x++){
+            splitCdn+=cdn[x];
+            if(((x+1)/3) == ctrl){
+                ctrl++;
+                splitCdn+="|"
+            }
+        }
+        splitCdn=splitCdn.slice(0,splitCdn.length-1)
+        console.log(splitCdn.split("|"))
+
+        var idR = 0;
+        document.getElementById("tBody").innerHTML=""
+        for(var t = 0; t<splitCdn.split("|").length; t++){
+            var newRow = document.createElement("tr");
+            var newCell = document.createElement("th");
+            newCell.innerHTML=splitCdn.split("|")[t];
+            newRow.setAttribute("id", `R${idR}`);
+            newRow.appendChild(newCell);
+            document.getElementById("tBody").appendChild(newRow);
+            idR++;
+
+
+        }
+
+        var altCdn = splitCdn.split("");
+        console.log(altCdn)
+        for(var x = 0; x<altCdn.length;x++){
+            var cp = "";
+            switch(altCdn[x]){
+                case "A":
+                    cp="U"
+                    break;
+                case "G":
+                    cp="C"
+                    break;
+                case "C":
+                    cp="G"
+                    break;
+                case "T":
+                    cp="A"
+                    break;
+                case "|":
+                    cp="|"
+                    break
+            }
+            altCdn[x]=cp;
+            
+        }
+
+        console.log(altCdn)
+
+        for(var t = 0; t<altCdn.join("").split("|").length; t++){
+            console.log(t)
+            var newCell = document.createElement("th");
+            newCell.innerHTML=altCdn.join("").split("|")[t];
+            document.getElementById(`R${t}`).appendChild(newCell);
+
+
+        }
+
+        var prots = altCdn.join("").split("|");
+        var resPrts = [];
+        console.log(prots);
+        for(var x = 0; x<prots.length;x++){
+            for(var y = 0; y<cods.length;y++){
+                if(cods[y] == prots[x]){
+                    resPrts.push(amin[y])
+                    break;
+                }
+            }
+        }
+
+        console.log(altCdn)
+        console.log(resPrts)
+
+        for(var t = 0; t<resPrts.length; t++){
+            var newCell = document.createElement("th");
+            newCell.innerHTML=resPrts[t].split(" ")[0];
+            document.getElementById(`R${t}`).appendChild(newCell);
+
+
+        }
+
+        for(var t = 0; t<resPrts.length; t++){
+            var newCell = document.createElement("th");
+            newCell.innerHTML=resPrts[t].split(" ")[1];
+            document.getElementById(`R${t}`).appendChild(newCell);
+
+
+        }
+
+        document.getElementById("table").style.display="";
+    }
+</script>
+</html>

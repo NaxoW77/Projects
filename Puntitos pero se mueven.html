@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: black;
+        }
+
+        div {
+            margin: 0 0;
+            width: 50px;
+            height: 50px;
+            transition: 1s;
+            position: fixed;
+        }
+    </style>
+</head>
+
+<body onkeypress="Gen()">
+    <div id="div0">
+
+    </div>
+</body>
+<script>
+    var count = 0
+    function Gen() {
+        count++;
+        newEl = document.createElement("div")
+        newEl.setAttribute("id", "div" + count)
+        document.body.appendChild(newEl)
+    }
+
+    setInterval(function () {
+        setTimeout(randomize, Math.floor(Math.random()*1))
+        setTimeout(randomize, Math.floor(Math.random()*1))
+    }, 1000)
+
+
+    function randomize() {
+        for (var x = 0; x <= count; x++) {
+            var t = 500 + Math.round(Math.random() * 500);
+
+            var left = Math.round(Math.random() * 1920) - 10;
+            var top = Math.round(Math.random() * 1080) - 10;
+            var rot = Math.round(Math.random() * 1080);
+            var siz = 50 + Math.round(Math.random() * 100);
+            var trs = (0.50 + Math.random() * 1.00).toFixed(2)
+
+            var r = 32 + Math.round(Math.random() * 244);
+            var g = 32 + Math.round(Math.random() * 244);
+            var b = 32 + Math.round(Math.random() * 244);
+            document.getElementById(`div${x}`).style.cssText = `left:${left}px;top:${top}px;background-color: rgb(${r},${g},${b});rotate:${rot}deg;scale:${siz}%;transition:${trs}s;`;
+        }
+    }
+</script>
+</script>
+
+</html>

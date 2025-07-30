@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peajes | Ruta 27</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(24, 21, 61);
+        }
+
+        section {
+            position: absolute;
+            width: 100%;
+            height: auto;
+        }
+
+        div {
+            display: flex;
+
+            margin: 0 auto;
+        }
+
+        h1,
+        h2 {
+            margin: 0;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            color: rgb(0, 196, 196);
+            font-size: 32px;
+            margin-top: -3px;
+            margin-left: 10px;
+            background-color: rgba(65, 54, 117, 0.753);
+            border-radius: 10px;
+            display: table-cell;
+            vertical-align: middle;
+            height: auto;
+            font-weight: 900;
+            border: 3px solid rgb(50, 29, 99);
+        }
+
+        button>div {
+            height: 28px;
+            width: 50px;
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        button:hover {
+            filter: brightness(130%);
+        }
+
+        span {
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .disabled {
+            display: none;
+        }
+
+        .handler {
+            flex: 1;
+            width: 100%;
+        }
+
+        .header {
+            position: relative;
+            margin-top: 2%;
+            text-align: center;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .titleBox {
+            flex: 50%;
+            min-width: 500px;
+            max-width: 800px;
+            box-sizing: border-box;
+            margin-bottom: 25px;
+        }
+
+        @media screen and (max-width: 800px) {
+            .titleBox {
+                flex: 50%;
+                margin: 10px;
+                margin-left: 30px;
+                margin-right: 30px;
+                min-width: 400px;
+                max-width: 800px;
+                box-sizing: border-box;
+                margin-bottom: 25px;
+            }
+
+            .titleSubBox>h1 {
+                margin-top: 10px;
+                font-size: 33px;
+                height: 50px;
+                padding: 0px;
+                height: auto;
+            }
+
+            .titleSubBox>h2 {
+                font-weight: 200;
+                margin-top: 10px;
+                font-size: 20px;
+            }
+        }
+
+        .titleSubBox {
+            display: block;
+            width: 100%;
+        }
+
+        .titleSubBox>h1 {
+            margin-top: 7px;
+            height: 50px;
+            padding: 0px;
+            height: auto;
+        }
+
+        .titleSubBox>h2 {
+            font-weight: 200;
+            margin-top: 7px;
+        }
+
+        .content {
+            display: block;
+            position: relative;
+        }
+
+        .foot {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: -15px;
+        }
+
+        .footer {
+            margin: 15px;
+            border: 5px outset rgb(98, 31, 161);
+            border-radius: 7px;
+            background: linear-gradient(15deg, rgb(101, 63, 151), rgb(59, 7, 128));
+            flex: 1 0 55%;
+            max-width: 55%;
+            height: 115px;
+            max-height: 250px;
+            box-sizing: border-box;
+        }
+
+        .footer>div>h1 {
+            font-size: calc(100% + 1.0vw);
+            font-weight: 900;
+            position: relative;
+            display: grid;
+            place-items: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        @media screen and (max-width: 830px) {
+            .footer {
+                margin: 15px;
+                border: 5px outset rgb(98, 31, 161);
+                border-radius: 7px;
+                background: linear-gradient(15deg, rgb(101, 63, 151), rgb(59, 7, 128));
+                flex: 1 0 75%;
+                max-width: 75%;
+                height: 110px;
+                max-height: 250px;
+                box-sizing: border-box;
+            }
+
+            .footer>div>h1 {
+                font-size: calc(100% + 1.5vw);
+                font-weight: 900;
+                position: relative;
+                display: grid;
+                place-items: center;
+                align-items: center;
+                width: 100%;
+                margin: 0;
+                padding: 10px;
+                text-align: center;
+            }
+        }
+
+        .total {
+            position: relative;
+            margin-top: 17.5%;
+        }
+
+        .nav {
+            position: fixed;
+            margin-top: 4.7%;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .item {
+            margin: 15px;
+            border: 5px outset rgb(63, 63, 172);
+            border-radius: 7px;
+            flex: 1 0 30vw;
+            max-width: 28vw;
+            height: 200px;
+            max-height: 250px;
+            box-sizing: border-box;
+            background: linear-gradient(15deg, rgb(89, 78, 204), rgb(24, 12, 150));
+            transition: 0.2s;
+        }
+
+        .selected {
+            border: 5px outset rgb(63, 63, 172);
+            border-radius: 7px;
+            margin-left: -5px;
+            margin-top: -5px;
+            background: linear-gradient(15deg, rgb(89, 78, 204), rgb(24, 12, 150));
+            animation: 3s linear infinite colorChange;
+        }
+
+        @keyframes colorChange {
+            0% {
+
+                filter: hue-rotate(12deg);
+            }
+
+            50% {
+                filter: hue-rotate(20deg);
+            }
+
+            100% {
+                filter: hue-rotate(12deg);
+            }
+        }
+
+        .item>div:has(div) {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .item>div>h1 {
+            font-size: calc(100% + 1.7vw);
+            font-weight: 900;
+            position: absolute;
+            width: 100%;
+            display: grid;
+            place-items: center;
+            align-items: center;
+            height: 120px;
+            text-shadow: 0px 0px 7px rgb(67, 93, 180);
+            color: rgba(215, 222, 255, 0.925);
+            pointer-events: none;
+        }
+
+        .item>div>h2 {
+            font-size: calc(100% + 1.2vw);
+            font-weight: 100;
+            position: absolute;
+            width: 100%;
+            bottom: 25%;
+            text-shadow: 0px 0px 7px rgb(67, 93, 180);
+            color: rgba(215, 222, 255, 0.925);
+            pointer-events: none;
+        }
+
+        .numInd {
+            background-color: rgba(102, 117, 207, 0.356);
+            border-right: 3px inset rgb(63, 63, 172);
+            border-bottom: 3px inset rgb(63, 63, 172);
+            text-shadow: 0px 0px 7px rgb(67, 93, 180);
+            color: rgba(215, 222, 255, 0.925);
+            border-bottom-right-radius: 7px;
+            padding: 3px;
+            margin: 0px;
+            float: left;
+            position: absolute;
+            font-size: calc(100% + 1.5vw);
+            pointer-events: none;
+        }
+
+        @media screen and (max-width: 830px) {
+            .item {
+                margin: 15px;
+                background-color: blue;
+                flex: 1 0 30vw;
+                max-width: 50vw;
+                height: 200px;
+                max-height: 250px;
+                box-sizing: border-box;
+            }
+
+            .item>div>h1 {
+                font-size: calc(100% + 3vw);
+                font-weight: 900;
+                position: relative;
+                display: grid;
+                place-items: center;
+                align-items: center;
+                height: 127px;
+                width: 100%;
+                pointer-events: none;
+            }
+
+            .item>div>h2 {
+                font-size: calc(90% + 2.5vw);
+                font-weight: 100;
+                position: absolute;
+                width: 100%;
+                bottom: 22%;
+                pointer-events: none;
+            }
+        }
+
+        .dtext {
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body onload="load()">
+    <div class="handler header">
+        <div class="titleBox">
+            <div class="titleSubBox">
+                <h1>Precios de peaje, <span>Ruta 27</span></h1>
+                <h2>Vehículos de carga normal.</h2>
+            </div>
+        </div>
+        <div class="titleBox">
+            <div class="titleSubBox">
+                <h1 id="dirTxt">Dirección: <span><span>Hacia San José.</span><button
+                    id="changeButton"><div>Girar</div></button></span></h1>
+                <h2 id="updTxt">Cargando...</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="handler content">
+
+        <div class="row">
+            <div class="item dtext">
+                <div id="p1">
+                    <div class="numInd">#1</div>
+                    <h1>Rampa Pozón</h1>
+                    <h2>Cargando...</h2>
+                </div>
+            </div>
+
+            <div class="item dtext">
+                <div id="p2">
+                    <div class="numInd">#2</div>
+                    <h1>Pozón</h1>
+                    <h2>Cargando...</h2>
+                </div>
+            </div>
+
+            <div class="item dtext">
+                <div id="p3">
+                    <div class="numInd">#3</div>
+                    <h1>Atenas</h1>
+                    <h2>Cargando...</h2>
+                </div>
+            </div>
+            <div class="item dtext">
+                <div id="p4">
+                    <div class="numInd">#4</div>
+                    <h1>Rampa Atenas</h1>
+                    <h2>Cargando...</h2>
+                </div>
+            </div>
+
+            <div class="item dtext">
+                <div id="p5">
+                    <div class="numInd">#5</div>
+                    <h1>Siquiares</h1>
+                    <h2>Cargando...</h2>
+                </div>
+            </div>
+
+            <div class="item dtext">
+                <div id="p6">
+                    <div class="numInd">#6</div>
+                    <h1>Guácima</h1>
+                    <h2>Cargando...</h2>
+                </div>
+            </div>
+            <div class="item dtext">
+                <div id="p7">
+                    <div class="numInd">#7</div>
+                    <h1>San Rafael</h1>
+                    <h2>Cargando...</h2>
+                </div>
+            </div>
+
+            <div class="item dtext">
+                <div id="p8">
+                    <div class="numInd">#8</div>
+                    <h1>Ciudad Colón</h1>
+                    <h2>Cargando...</h2>
+                </div>
+            </div>
+
+            <div class="item dtext">
+                <div id="p9">
+                    <div class="numInd">#9</div>
+                    <h1>Escazú</h1>
+                    <h2>Cargando...</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="handler foot">
+        <div class="footer">
+            <div id="resTxt">
+                <h1>Seleccione los peajes para calcular.</h1>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    var doc2;
+    var actualz = "";
+    var preciosElmnt = [];
+    var preciosTxt = [];
+
+    var updTxt = document.getElementById("updTxt");
+    var dirTxt = document.getElementById("dirTxt");
+    var resTxt = document.querySelector("#resTxt>h1");
+
+    function load() {
+
+        for (var i = 0; i < 9; i++) {
+            preciosElmnt.push(document.querySelector(`#p${i + 1}`));
+            preciosTxt.push(document.querySelector(`#p${i + 1} > h2`))
+        }
+        fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://globalviaruta27.com/tarifas'))
+            .then(response => {
+                return response.text()
+            })
+            .then(data => {
+                const parser = new DOMParser()
+
+                doc2 = parser.parseFromString(data, "text/html");
+                doc2.documentElement.innerHTML = doc2.documentElement.innerHTML.replace(/\\&quot;|\\n|\\t/gm, "");
+                actualz = doc2.querySelector("#tarifas > h3").innerHTML;
+                for (var x = 0; x < 9; x++) {
+                    document.getElementsByClassName("item")[x].style.cursor="pointer";
+                    document.getElementsByClassName("item")[x].addEventListener("click", function (ev) { clicked(ev) });
+                    document.getElementsByClassName("item")[x].addEventListener("mouseover", function (ev) { this.style.filter += "brightness(1.15)" });
+                    document.getElementsByClassName("item")[x].addEventListener("mouseout", function (ev) { this.style.filter = this.style.filter.replace("brightness(1.15)", "") });
+                }
+                for (var j = 0; j < 9; j++) {
+                    preciosTxt[j].innerHTML = "&#8353;" + doc2.querySelector(`.row-2 > .column-${(8 - j) + 2}`).innerHTML.replace(/¢/gm, "");
+                }
+
+                dirTxt.querySelector("button").style.cursor="pointer";
+                dirTxt.querySelector("button").addEventListener("click", function(){changeRoute()});
+                var updMsg = actualz.split(" ");
+                updMsg = updMsg.slice(updMsg.length - 2, updMsg.length);
+                updMsg[0] = updMsg[0].toLowerCase().split("");
+                updMsg[0][0] = updMsg[0][0].toUpperCase();
+                updMsg[0] = updMsg[0].join("");
+                updTxt.innerHTML = `Última actualización: <span>${updMsg.join(" ")}.</span>`;
+            })
+            .catch(error => {
+                console.error('Failed to fetch page: ', error)
+                updTxt.innerHTML = `Error.`;
+                resTxt.innerHTML = `Error al cargar los datos.`;
+                dirTxt.querySelector("button").style.color = "gray";
+                for (z in preciosElmnt) {
+                    preciosElmnt[z].querySelector("h2").innerHTML = "Error."
+                }
+            })
+
+    }
+
+    function clicked(ev) {
+        let parntEl = ev.target;
+        let chldEl = ev.target.querySelector(".item>div")
+        if (!chldEl.classList.contains("selected")) {
+            chldEl.classList.add("selected");
+        } else {
+            chldEl.classList.remove("selected");
+        }
+
+        calc(chldEl);
+    }
+
+    var precioSum = [];
+    function calc(elm) {
+        let prec = parseInt(elm.querySelector(`#${elm.id}>h2`).innerHTML.replace("₡", ""));
+        console.log(prec)
+        if (!isNaN(prec)) {
+            if (!precioSum.includes(prec)) {
+                precioSum.push(prec);
+            } else {
+                precioSum.splice(precioSum.indexOf(prec), 1);
+            }
+        }
+
+        let res = 0;
+        for (var z = 0; z < precioSum.length; z++) {
+            res += precioSum[z];
+        }
+        console.log(res)
+        if (res > 0) {
+            resTxt.innerHTML = `Precio total a pagar: <span>&#8353;${res}</span>`;
+        } else {
+            resTxt.innerHTML = "Seleccione los peajes para calcular.";
+        }
+    }
+
+    var route = 1;
+    function changeRoute() {
+        for (var x = 0; x < 8; x++) {
+            let oldEl = document.querySelector(`#p${x + 1}`);
+            let newEl = document.querySelector(`#p${8 - x + 1}`);
+            if (x <= 3) {
+
+
+
+                let aftNum = oldEl.querySelector(".numInd").innerHTML;
+                oldEl.parentElement.style.background = "";
+                oldEl.parentElement.style.border = "";
+                oldEl.querySelector(".numInd").innerHTML = newEl.querySelector(".numInd").innerHTML;
+                newEl.querySelector(".numInd").innerHTML = aftNum;
+
+                let aftEl = oldEl.outerHTML;
+                oldEl.outerHTML = newEl.outerHTML;
+                newEl.outerHTML = aftEl;
+            }
+        }
+        route == 0 ? (route = 1,
+            dirTxt.querySelector("span>span").innerHTML = "Hacia San José.",
+            dirTxt.querySelector("button").style.color = "")
+
+            : (route = 0,
+                dirTxt.querySelector("span>span").innerHTML = "Desde San José.",
+                dirTxt.querySelector("button").style.color = "rgb(171, 125, 221)")
+        console.log(route)
+    }
+
+</script>
+
+</html>

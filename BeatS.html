@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background: black;
+            color: white;
+            font: 200px 'Roboto', sans-serif !important;
+            font-weight: 800;
+            padding: 0;
+            margin: 0;
+        }
+
+        h2 {
+            width: 98%;
+            font-size: inherit;
+            text-align: center;
+            position: fixed;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -20%);
+            padding: 0;
+            margin: 0;
+            letter-spacing: 10px;
+        }
+
+        [class^=char] {
+            display: inline-block !important;
+            line-height: 1;
+            transform-origin: bottom;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;font-size:70px" id="txt">[TOCA]</h1>
+    <h2>
+        <div class="container">|||||||||||||||||||||||||||||||</div>
+    </h2>
+</body>
+<script>
+
+    // split text
+    // vars
+    var OBJ = 'h2 > div span',
+        flag = 1; // flag to not multiply events
+
+    var cont = document.getElementsByClassName("container")[0];
+    var txt = cont.innerHTML.split("");
+    cont.innerHTML="";
+    for(var x=0;x<txt.length;x++){
+        var newEl = document.createElement("span");
+        newEl.innerHTML = txt[x];
+        newEl.setAttribute("class", "char")
+        cont.appendChild(newEl);
+    }
+
+    // set up audio context on BODY CLICK!
+    window.addEventListener('click', function () {
+        document.getElementById("txt").style.display="none";
+        if (!flag) return; // if event is on, exit
+        flag = !flag;
+
+        var audioContext = window.AudioContext || window.webkitAudioContext;
+        // variables
+        var analyserNode,
+            frequencyData = new Uint8Array(128);
+        const allRepeatedEls = document.querySelectorAll(OBJ),
+            totalEls = allRepeatedEls.length;
+
+        var copyEls = allRepeatedEls;
+        // create audio class
+        if (audioContext) {
+            var audioAPI = new audioContext(); // Web Audio API is available.
+        } else {
+            console.log("error")/* ERROR HANDLING */
+        }
+
+        var nC=0;
+
+        setInterval(function(){
+                var t = Math.floor(Math.random()*2) == 0 ? allRepeatedEls[totalEls-1-nC] : allRepeatedEls[nC];
+                var r = 16+Math.round(Math.random() * 224);
+                var g = 16+Math.round(Math.random() * 224)
+                var b = 16+Math.round(Math.random() * 224)
+                var colr = `rgb(${r},${g},${b})`;
+                var colr2 = `rgb(${r-25},${g-25},${b-25})`;
+                t.style.transition = `background 500ms, background-color 500ms, background-clip 500ms` 
+                t.style.background = `-webkit-linear-gradient(0deg, ${colr} 0 45%, ${colr2} 45% 100%)`;
+                t.style.backgroundClip = "text";
+                
+                if(nC<=totalEls-2){
+                    nC++;
+                }else{
+                    nC=0;
+                }
+        },10)
+
+        // main animation func
+        function animateStuff() {
+
+            requestAnimationFrame(animateStuff);
+
+            analyserNode.getByteFrequencyData(frequencyData);
+            // loop and refreq all with nice matrix style
+            
+            for (let i = 0; i < totalEls; i++) {
+                // range is 0 - 255 * 1.2 / 100 =~ 0-3
+                var rang = Math.floor(i / totalEls * frequencyData.length); // find equal distance in haystack
+                var FREQ = frequencyData[rang] / 255;
+                // set minimal opacity to 20%
+                // matrix set Y only [ matrix(X, 0, 0, Y, 0, 0) ]
+                allRepeatedEls[i].style.transform = "matrix(2, 0, 0, " + (FREQ * 8 + 1) + ", 0, 0)";
+                allRepeatedEls[i].style.filter = `grayscale(${120-(30+(FREQ)*350)}%) brightness(${(35+(FREQ)*115)}%)`;
+                // set color to:
+                // allRepeatedEls[i].style.color = colorArr[ Math.floor( Math.random()*colorArr.length ) ] ;
+            }
+        }
+
+        // create an audio API analyser node and connect to source
+        function createAnalyserNode(audioSource) {
+            analyserNode = audioAPI.createAnalyser();
+            analyserNode.fftSize = 2048;
+            audioSource.connect(analyserNode);
+        }
+
+
+        // getUserMedia success callback -> pipe audio stream into audio API
+        var gotStream = function (stream) {
+            // Create an audio input from the stream.
+            var audioSource = audioAPI.createMediaStreamSource(stream);
+            createAnalyserNode(audioSource);
+            animateStuff();
+        };
+
+        setTimeout(function () { console.log(frequencyData); }, 5000);
+
+        // pipe in analysing to getUserMedia
+        navigator.mediaDevices.
+            getUserMedia({ audio: true, video: false }).
+            then(gotStream);
+    });
+    //# sourceURL=pen.js
+
+
+
+</script>
+
+</html>

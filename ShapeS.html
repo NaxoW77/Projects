@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .backdrop{
+            animation: colrs 1.0s infinite;
+            width: 1920px;
+            height: 1080px;
+            margin-top: -8px;
+            margin-left: -8px;
+
+            position: fixed;
+            background-color: black;
+            filter:hue-rotate(0deg) saturate(500%);
+        }
+        body {
+            background-color: white;
+        }
+
+        div {
+            margin: 0 0;
+            width: 50px;
+            height: 50px;
+            transition: 1s;
+            position: fixed;
+            border: 10px solid black;
+            animation: desat 0.5s infinite;
+            filter:brightness(100%);
+        }
+
+        @keyframes desat{
+            0% {}
+            50%{filter: brightness(125%) hue-rotate(40deg);}
+            100% {}
+        }
+
+        @keyframes colrs{
+            0% {}
+            50%{filter: hue-rotate(45deg) saturate(500%);}
+            100% {}
+        }
+    </style>
+</head>
+
+<body onkeypress="keyP(event)">
+    <section href="" id="backdrop" class="backdrop"></section>
+    <div id="div0">
+
+    </div>
+
+
+</body>
+<script>
+
+    //Cualquier tecla: Randomizar
+    //1,2,3: velocidades
+    //*,.: B/N|Color
+    //Espacio: Generar nuevo
+    //-: Cambio de modo 1,2,3→Row1,Row2,Row3
+    
+    function keyP(ky){
+    
+        var keymode = true;
+        var tp1A = ["1","2","3","4","5","6","7","8","9","0"]
+        var tp2A = ["q","w","e","r","t","y","u","i","o","p"]
+        var tp3A = ["a","s","d","f","g","h","j","k","l","ñ"]
+        var tp4A = ["z","x","c","v","b","n","m",","]
+
+        if(ky.key == " "){
+            Gen();
+        }
+        if(ky.key == "*" || ky.key == "."){
+            if(colors){
+            colors = false
+            }else{
+                colors = true
+            }
+        }
+
+        if(tp1A.includes(ky.key)){
+            tempo=1
+        }
+        if(tp2A.includes(ky.key)){
+            tempo=2
+        }
+        if(tp3A.includes(ky.key)){
+            tempo=3
+        }
+        if(tp4A.includes(ky.key)){
+            tempo=4
+        }
+
+            randomize();
+        }
+
+    var colors = false;
+    var tempo = 2;
+
+    var count = 0
+    function Gen() {
+        count++;
+        newEl = document.createElement("div")
+        newEl.setAttribute("id", "div" + count)
+        document.body.appendChild(newEl)
+    }
+
+    function randomize() {
+        var min=0.10
+        var max=0.99
+
+        if(tempo==1){
+            min=0.1
+            max=0.10
+        }else if (tempo==2){
+            min=0.20
+            max=0.25
+        }else if (tempo==3){
+            min=0.35
+            max=0.65
+        }else if (tempo==4){
+            min=0.75
+            max=0.99
+        }
+        
+
+
+        for (var x = 0; x <= count; x++) {
+            var borders = ["dotted", "dashed", "solid", "double", "groove", "ridge"]
+            var t = 500 + Math.round(Math.random() * 500);
+
+            var left = Math.round(Math.random() * window.outerWidth) - 25;
+            var top = Math.round(Math.random() * window.outerHeight) - 50;
+            var rot = Math.round(Math.random() * 1080);
+            var siz = 50 + Math.round(Math.random() * 200);
+
+
+            var trs = (min + Math.random() * max).toFixed(2)
+            var trs2 = (min + Math.random() * max).toFixed(2)
+
+            var r = 32 + Math.round(Math.random() * 224);
+            var g = 32 + Math.round(Math.random() * 224);
+            var b = 32 + Math.round(Math.random() * 224);
+
+            var r2 = 128 + Math.round(Math.random() * 128);
+            var g2 = 128 + Math.round(Math.random() * 128);
+            var b2 = 128 + Math.round(Math.random() * 128);
+
+            if(colors){
+            document.getElementById(`div${x}`).style.cssText = `left:${left}px;top:${top}px;background-color: rgb(${r},${g},${b});border-style: ${borders[Math.floor(Math.random()*borders.length)]};border-color: rgb(${255-r},${255-g},${255-b});rotate:${rot}deg;scale:${siz}%;transition:${trs}s;`;
+            }else{
+            r2=0
+            g2=0
+            b2=0
+
+            document.getElementById(`div${x}`).style.cssText = `left:${left}px;top:${top}px;background-color: ;border-style: ${borders[Math.floor(Math.random()*borders.length)]};border-color: rgb(${255-r},${255-g},${255-b});rotate:${rot}deg;scale:${siz}%;transition:${trs}s;`;
+            }
+            
+            document.getElementById("backdrop").style.cssText = `background-color: rgb(${r2},${g2},${b2});transition:${trs2}s`
+        }
+    }
+</script>
+</script>
+
+</html>

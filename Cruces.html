@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            border: 3px solid black;
+            margin: 0;
+            padding: 0px;
+            width: 255px;
+            height: 255px;
+            position: fixed;
+            border-spacing: 0px;
+        }
+        th,tr,table{
+            padding:0;
+            margin: 0;
+        }
+
+        th{ 
+
+            margin: 0;
+            padding:0px;
+            background-color: red;
+            width:1px;
+            height:1px;
+            font-size: 3px;
+        }
+    </style>
+
+</head>
+
+<body onload="start();fillTable()" onresize="start()">
+    <table id="table0"></table>
+</body>
+<script>
+    function start() {
+        document.getElementById("table0").style.left = window.innerWidth / 4 + "px";
+        document.getElementById("table0").style.top = "0px";
+        document.getElementById("table0").style.width = (window.innerHeight / 8) * 8 + "px";
+        document.getElementById("table0").style.height = (window.innerHeight / 8) * 8 + "px";
+        console.log(window.innerHeight, window.innerWidth)
+    }
+
+    var fields = 100;
+
+    function fillTable() {
+        var rowCount = 1;
+        var fieldCount = 1;
+        let table = document.getElementById("table0");
+        for (var x = 0; x < fields; x++) {
+            let newRow = document.createElement("tr")
+            newRow.setAttribute("id",rowCount);
+            var fieldCount = 1;
+            rowCount++;
+
+            for (var y = 0; y < fields; y++) {
+                let newField = document.createElement("th")
+                newField.setAttribute("id",rowCount-1+"-"+fieldCount);
+                newField.style.backgroundColor = `rgb(255,255,255)`
+                newField.addEventListener("click",paintSelf,false)
+                fieldCount++;
+                newRow.appendChild(newField)
+            }
+            table.appendChild(newRow);
+        }
+
+
+    }
+
+    function paintSelf(){
+        this.style.backgroundColor = "black";
+        updateTable(this)
+    }
+
+    function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}   
+    function updateTable(ele){
+        var range = 1;
+        let intV1 = setInterval(function(){
+        
+        var idVal = ele.id.split("-")
+        if(parseInt(idVal[0])+range < 101 && parseInt(idVal[1])+range < 101 && parseInt(idVal[0])-range >0 && parseInt(idVal[1])-range >0){
+        document.getElementById(`${parseInt(idVal[0])-range}-${idVal[1]}`).style.backgroundColor = "black";
+        document.getElementById(`${parseInt(idVal[0])+range}-${idVal[1]}`).style.backgroundColor = "black";
+        document.getElementById(`${idVal[0]}-${parseInt(idVal[1])-range}`).style.backgroundColor = "black";
+        document.getElementById(`${idVal[0]}-${parseInt(idVal[1])+range}`).style.backgroundColor = "black";
+
+        range++;
+        }else{
+            clearInterval(intV1)
+        }
+    },1)
+    }
+</script>
+
+</html>

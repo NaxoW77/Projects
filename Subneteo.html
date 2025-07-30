@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subneteo</title>
+    <style>
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        table {
+            border: 3px solid black;
+        }
+
+        th {
+            border: 1px solid black;
+            padding: 20px;
+        }
+
+        input{
+            height: 25px;font-size: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Red: <input style="width: 165px;" type="text" id="in1"></h1>
+    <h1>Hosts: <input style="width: 75px;" type="text" id="in2"></h1>
+    <h1>Subnets: <input style="width: 75px;" type="text" id="in3"></h1>
+
+    <button onclick="start()" style="border: 3px solid black; width: 100px;height: 50px;">Calcular</button>
+
+    <h2 style="display: none;color:red" id="st">Valor inválido.</h2>
+
+    <br><br>
+
+    <table id="table" style="display: none;">
+        <thead>
+            <th>Nº</th>
+            <th>Red</th>
+            <th style="border-right: none;"></th>
+            <th style="border-right: none;border-left:none">Utilizables</th>
+            <th style="border-left: none;"></th>
+            <th>Broadcast</th>
+            <th>Mask</th>
+        </thead>
+        <tbody id="tBody">
+            
+        </tbody>
+    </table>
+
+    <table style="display: none;">
+        <tr id="rwN" style="display: none;">
+            <th>N</th>
+            <th id="nN"></th>
+            <th id="iN"></th>
+            <th>↔</th>
+            <th id="oN"></th>
+            <th id="bN"></th>
+            <th id="mN"></th>
+        </tr>
+    </table>
+
+</body>
+<script>
+
+    function start(){
+
+        if(checkVals() == true){
+            document.getElementById("st").style.display = "none"
+            setTable();
+            calcSMask();
+            calcIPs();
+            calcBcast();
+            calcIPr1();
+            calcIPr2();
+        }else{
+            document.getElementById("st").style.display = ""
+        }
+    }
+
+    function checkVals(){
+        var ret = true;
+        let in1 = document.getElementById("in1").value;
+        let in2 = document.getElementById("in2").value;
+        let in3 = document.getElementById("in3").value;
+        let in1A = in1.split(".")
+        if(in1 == "" || in2 == "" || in3 == "" || in1A.length != 4 || isNaN(in2) || isNaN(in3) || in2<1 || in3<1){
+            ret = false
+        }
+        for(x in in1A){
+            if(in1A[x]<0 || in1A[x]>255 || isNaN(in1A[x])){
+                ret=false
+            }
+        }
+        return ret;
+    }
+
+    var snN = 0
+    function setTable() {
+        snN=0
+
+        document.getElementById("tBody").innerHTML = ""
+
+        var count = document.getElementById("in3").value
+
+        for(var x = 1; x<=count;x++){        
+        var newRow = document.createElement("tr");
+        newRow.innerHTML = document.getElementById("rwN").innerHTML;
+        snN++;
+        newRow.innerHTML = newRow.innerHTML.replace(/N/g, snN)
+        newRow.setAttribute("id", `rw${snN}`)
+
+        document.getElementById("tBody").appendChild(newRow)
+        }
+
+        var newRow = document.createElement("tr");
+        newRow.innerHTML = document.getElementById("rwN").innerHTML;
+        newRow.setAttribute("id", `rw${snN+1}`);
+        newRow.innerHTML = newRow.innerHTML.replace(/N/g, snN+1).replace("↔","").replace(`th>${snN+1}`, "th>X");
+        document.getElementById("tBody").appendChild(newRow);
+        document.getElementById("table").style.display="";
+    }
+
+
+    var bB = 0
+    var bJ = 0
+    function calcSMask(){
+        var hosts = parseInt(document.getElementById("in2").value)
+        hosts+=2
+
+        switch(true){
+            case (hosts>= 3 && hosts <= 4):
+                bB=2;
+                break;
+
+            case (hosts>= 5 && hosts <= 8):
+                bB=3;
+                break;
+
+            case (hosts>= 9 && hosts <= 16):
+                bB=4;
+                break;
+
+            case (hosts>= 17 && hosts <= 32):
+                bB=5;
+                break;
+
+            case (hosts>= 33 && hosts <= 64):
+                bB=6;
+                break;
+
+            case (hosts>= 65 && hosts <= 128):
+                bB=7;
+                break;
+
+            case (hosts>= 129 && hosts <= 256):
+                bB=8;
+                break;
+
+            case (hosts>= 257 && hosts <= 512):
+                bB=9;
+                break;
+
+            case (hosts>= 513 && hosts <= 1024):
+                bB=10;
+                break;
+
+            case (hosts>= 1025 && hosts <= 2048):
+                bB=11;
+                break;
+
+            case (hosts>= 2049 && hosts <= 4096):
+                bB=12;
+                break;
+
+            case (hosts>= 4097 && hosts <= 8192):
+                bB=13;
+                break;
+
+            case (hosts>= 8193 && hosts <= 16384):
+                bB=14;
+                break;
+
+            case (hosts>= 16385 && hosts <= 32768):
+                bB=15;
+                break;
+
+            case (hosts>= 32769 && hosts <= 65536):
+                bB=16;
+                break;
+
+            case (hosts>= 65537):
+                window.alert("No se pueden manejar valores de más de 65536 hosts de momento...")
+                window.location.reload();
+                break;
+        }
+
+        let subnetMask = [255,255,255,255]
+
+
+        if(bB <=8){
+        var numSl=1
+        var res=255
+        for(var x=0;x<bB;x++){
+            res-=numSl
+            numSl*=2
+            
+        }
+        subnetMask[3]=res
+    }else{
+        var bB2 = bB
+        bB2-=8
+        var numSl=1
+        var res=255
+        for(var x=0;x<bB2;x++){
+            res-=numSl
+            numSl*=2
+        }
+        subnetMask[3]=0
+        subnetMask[2]=res
+    }
+
+        for(var x = 1; x<=snN;x++){
+            document.getElementById(`m${x}`).innerHTML = subnetMask.join(".");
+        }
+    }
+
+    function calcIPs(){
+        document.getElementById("n1").innerHTML = document.getElementById("in1").value
+        var ip = document.getElementById("in1").value.split(".")
+        for (x in ip){
+            ip[x] = parseInt(ip[x])
+        }
+
+        var jumpCount = Math.pow(2,bB);
+
+        for(var x = 2; x<=snN+1;x++){
+            
+            ip[3]+=jumpCount
+            if(ip[3] >=256){
+                ip[2]+=parseInt(ip[3]/256)
+                ip[3]=parseInt(ip[3]%256)
+
+                if(ip[2] >=256){
+                    ip[1]+=parseInt(ip[2]/256)
+                    ip[2]=parseInt(ip[2]%256)
+
+                    if(ip[1] >=256){
+                        ip[0]+=parseInt(ip[1]/256)
+                        ip[1]=parseInt(ip[1]%256)
+                    }
+                }
+            }
+
+            document.getElementById(`n${x}`).innerHTML = ip.join(".");
+        }
+        
+    }
+
+    function calcBcast(){
+        var ips = [];
+
+        for(var x = 2; x<=snN+1;x++){
+            ips.push(document.getElementById(`n${x}`).innerHTML.split("."))
+        }
+
+        for(x in ips){
+            for(y in ips[x]){
+                ips[x][y] = parseInt(ips[x][y])
+            }
+        }
+
+        for(var x = 2; x<=snN+1;x++){
+            
+            ips[x-2][3]-=1
+            if(ips[x-2][3] < 0){
+                ips[x-2][3]=255
+                ips[x-2][2]-=1
+                if(ips[x-2][2] < 0){
+                    ips[x-2][2]=255
+                    ips[x-2][1]-=1
+                    if(ips[x-2][1] < 0){
+                        ips[x-2][1]=255
+                        ips[x-2][0]-=1
+                    }
+                }
+            }
+
+            document.getElementById(`b${x-1}`).innerHTML = ips[x-2].join(".");
+        }
+    }
+
+    function calcIPr1(){
+        var ips = [];
+
+        for(var x = 1; x<=snN;x++){
+            ips.push(document.getElementById(`n${x}`).innerHTML.split("."))
+        }
+
+        for(x in ips){
+            for(y in ips[x]){
+                ips[x][y] = parseInt(ips[x][y])
+            }
+        }
+
+        for(var x = 2; x<=snN+1;x++){
+            
+            ips[x-2][3]+=1
+            if(ips[x-2][3] >= 256){
+                ips[x-2][3]=0
+                ips[x-2][2]+=1
+                if(ips[x-2][2] >= 256){
+                    ips[x-2][2]=0
+                    ips[x-2][1]+=1
+                    if(ips[x-2][1] >= 256){
+                        ips[x-2][1]=0
+                        ips[x-2][0]+=1
+                    }
+                }
+            }
+
+            document.getElementById(`i${x-1}`).innerHTML = ips[x-2].join(".");
+        }
+    }
+
+    function calcIPr2(){
+        var ips = [];
+
+        for(var x = 1; x<=snN;x++){
+            ips.push(document.getElementById(`b${x}`).innerHTML.split("."))
+        }
+
+        for(x in ips){
+            for(y in ips[x]){
+                ips[x][y] = parseInt(ips[x][y])
+            }
+        }
+        console.log(ips)
+
+        for(var x = 2; x<=snN+1;x++){
+            
+            ips[x-2][3]-=1
+            if(ips[x-2][3] < 0){
+                ips[x-2][3]=255
+                ips[x-2][2]-=1
+                if(ips[x-2][2] < 0){
+                    ips[x-2][2]=255
+                    ips[x-2][1]-=1
+                    if(ips[x-2][1] < 0){
+                        ips[x-2][1]=255
+                        ips[x-2][0]-=1
+                    }
+                }
+            }
+
+            document.getElementById(`o${x-1}`).innerHTML = ips[x-2].join(".");
+        }
+    }
+</script>
+
+</html>
