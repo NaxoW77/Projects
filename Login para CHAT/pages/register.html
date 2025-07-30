@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="text-align: center;font-family:'Courier New', Courier, monospace">
+    <h1 style="background-color: #f3ffaf50;">Registrar nuevo usuario</h1>
+    <hr>
+    <div style="margin: 0 auto;width: 350px;">
+
+    <form style="position: absolute;text-align:left;margin-bottom:25px" action="http://localhost:8080/login" method="POST" name="login" id="logForm">
+        <h2 style="margin-bottom: -15px;">Nombre: <input style="margin-left: 65px;" type="text" id="logName"></h2>
+        <h2 style="margin-bottom: 0px;">Contraseña: <input style="margin-left: 8px;" type="text" id="logPass"></h2><br> 
+    </form>
+    <button onclick="sendReq()" id="subBtn" style="margin-left:-45px;margin-top:100px;position:absolute;border:2px solid black;background-color:#EFEFEF">Registrarme</button>
+    <br><br>
+    <p style="margin-left:100px;margin-top:100px;position:absolute;color:blue;text-decoration: underline;" onclick='window.location.href="/login";'>← Iniciar sesión</p>
+    </div>
+
+    <h2 id="errormsg" style="margin-top:150px;background-color:#FF5050Af;opacity:0">Error: $</h2>
+</body>
+<script>
+    var subBtn = document.getElementById("subBtn");
+    var logName = document.getElementById("logName");
+    var logPass = document.getElementById("logPass");
+
+    async function sendReq(cl){
+
+        const response = await fetch("/register", {
+            method: "POST", 
+            body: `user=${logName.value}&pass=${logPass.value}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+        });
+        var resp = await response.text();
+        var errormsg = document.getElementById("errormsg");
+        if(resp.includes("Error")){
+                errormsg.style.opacity = "1"
+                errormsg.innerHTML = resp
+            setTimeout(function(){
+                errormsg.style.opacity = "0"
+            },3000)
+    }else{
+        window.alert("Usuario registrado correctamente.\nRegresando al inicio de sesión.")
+        window.location.href="/login"
+    }
+    console.log(resp)
+}
+</script>
+</html>

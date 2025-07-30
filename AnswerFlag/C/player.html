@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>AnswerFlag</title>
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <section id="selectSection" class="disabled">
+    <h1>Selecciona una bandera</h1>
+
+    <div class="playerContainer">
+      <div id="fl1" onclick="selectFlag(this)">
+        <img src="img/flag1.png">
+        <h1>[Seleccionar]</h1>
+      </div>
+      <div id="fl2" onclick="selectFlag(this)">
+        <img src="img/flag2.png">
+        <h1>[Seleccionar]</h1>
+      </div>
+      <div id="fl3" onclick="selectFlag(this)">
+        <img src="img/flag3.png">
+        <h1>[Seleccionar]</h1>
+      </div>
+      <div id="fl4" onclick="selectFlag(this)">
+        <img src="img/flag4.png">
+        <h1>[Seleccionar]</h1>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="questionSection" class="disabled">
+
+    <h1 id="qq">A diferencia del sistema binario, con los bits, la computación cuántica utiliza un nuevo tipo de bit...</h1>
+
+    <div class="questionContainer">
+      <div id="q1">
+        <div class="capt">A</div>
+        <div><h1>La capacidad de entendimiento las personas.</h1></div>
+      </div>
+      <div id="q2">
+        <div class="capt">B</div>
+        <div><h1>La capacidad de entendimiento las personas.</h1></div>
+      </div>
+    </div>
+    <div class="questionContainer">
+      <div id="q3">
+        <div class="capt">C</div>
+        <div><h1>La capacidad de entendimiento las personas.</h1></div>
+      </div>
+      <div id="q4">
+        <div class="capt">D</div>
+        <div><h1>La capacidad de entendimiento las personas.</h1></div>
+      </div>
+  </section>
+
+  <section id="resultsSection" class="disabled">
+    <div class="playerContainer">
+      <div id="fr1">
+        <img src="img/flag1.png">
+        <h1>$ <br><p>(0 Puntos)</p></h1>
+      </div>
+      <div id="fr2">
+        <img src="img/flag2.png">
+        <h1>$ <br><p>(0 Puntos)</p></h1>
+      </div>
+      <div id="fr3">
+        <img src="img/flag3.png">
+        <h1>$ <br><p>(0 Puntos)</p></h1>
+      </div>
+      <div id="fr4">
+        <img src="img/flag4.png">
+        <h1>$ <br><p>(0 Puntos)</p></h1>
+      </div>
+    </div>
+  </section>
+
+  <section>
+
+  </section>
+  <div>
+    <button id="nextButton" class="hidden" onclick="changeMode()">Continuar</button>
+  </div>
+
+</body>
+
+<script src="/js"></script>
+<script src="client.js"></script>
+
+</html>

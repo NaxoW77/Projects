@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal | Escaner de sopas de letras</title>
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0;
+            border: 3px solid black;
+            text-align: center;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        div {
+            margin: 0;
+        }
+
+        div.title {
+            background-color: #999999;
+            border-bottom: 3px solid black;
+            width: auto;
+            height: 100px;
+            margin: 0 auto;
+            display: block;
+
+        }
+
+        h1 {
+            position: absolute;
+            text-align: left;
+            margin: 25px;
+            margin-left: 25px;
+            text-decoration: underline;
+        }
+
+        button {
+            width: 125px;
+            height: 75px;
+            background-color: rgb(177, 177, 177);
+            border: 4px inset black;
+            border-radius: 5px;
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: rgb(156, 156, 156);
+        }
+
+        table {
+            margin: 0 auto;
+            border-spacing: 0px;
+        }
+
+        .soupTable {
+            margin: 0 auto;
+            border-spacing: 0px;
+            background-color: #c0c0c0;
+            border: 5px solid #000000;
+            position: relative;
+            transition: 0.7s;
+        }
+
+        .soupTable th {
+            border: 1px solid #868686;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            transition: 0.7s;
+        }
+
+        .foundTable {
+            background-color: rgb(170, 170, 170);
+            width: 90%;
+            margin: 0 auto;
+            border: 3px solid #000000;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            transition: 0.7s;
+        }
+
+        .foundTable div {
+            border: 1px solid #474747;
+            width: auto;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            transition: 0.7s;
+        }
+
+        .btn1 {
+            float: right;
+            margin-top: 12px;
+            margin-right: 10px;
+        }
+
+        .btn2 {
+            width: 200px;
+            font-size: 18px;
+            float: center;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body onload="resize();" onresize="resize();">
+    <div class="title">
+        <h1>Escáner de sopas de letras</h1>
+        <button class="btn1" onclick="window.location.href='/new'">Crear nueva sopa</button>
+    </div>
+
+    <div style="display: flex;width: 84.9%;height:89.3%;background-color:rgb(209, 209, 209);float:left;">
+        <div style="margin: auto auto;">
+            <table class="soupTable" id="soupTable">
+
+            </table>
+        </div>
+    </div>
+    <div style="width: 15%;height:89.3%;background-color:rgb(197, 197, 197);float:right;">
+
+        <div>
+            <h2 style="font-size:30px;margin-bottom:-10px">Buscar</h2>
+            <h3 style="margin-bottom: 20px;padding-left: 15px;padding-right:15px;">Ingresa la palabra que quieras buscar
+                aquí.
+            </h3>
+            <input type="text" id="schkey" style="border: 3px solid black;">
+            <button class="btn2" onclick="Search();">Buscar palabra</button>
+        </div>
+        <div id="foundWordsDiv" style="display: none;">
+            <h2>Palabras encontradas</h2>
+            <div id="foundTable" class="foundTable">
+
+            </div>
+
+        </div>
+
+
+
+
+
+</body>
+<script>
+    function resize() {
+        document.body.style.cssText = `height:${window.innerHeight - 6}px;`
+    }
+
+    var socket;
+    const socketURL = 'ws://' + window.location.host + '/server'
+    socket = new WebSocket(socketURL);
+    socket.onopen = () => {
+        sendReq("req_con")
+    }
+
+    socket.onmessage = e => {
+        if (event.data.split("|")[0] == "res_con") {
+            console.log(event.data.split("|")[1])
+            fillTable(event.data.split("|")[1])
+        }
+        console.log(event.data.split("|")[0])
+    }
+
+    var tableRows = 0;
+    var tableCols = 0;
+
+    function fillTable(data) {
+        var table = document.getElementById("soupTable");
+
+        var tableData = [];
+        var rows = data.split("$");
+        var row;
+        var cell;
+        var rowX = 0;
+        var rowY = 0;
+        for (x in rows) {
+            tableData.push([]);
+            var row = document.createElement("tr");
+            rowY++;
+            rowX = 0;
+            for (y in rows) {
+                rowX++;
+                tableData[x].push(rows[x].split(" ")[y]);
+                var cell = document.createElement("th");
+                cell.setAttribute("id", `${rowX}-${rowY}`);
+                cell.innerHTML = tableData[x][y];
+                row.appendChild(cell);
+            }
+            tableCols = rowX;
+            tableRows = rowY;
+            table.appendChild(row);
+        }
+        console.log(tableData)
+    }
+
+    function sendReq(msg) {
+        socket.send(msg)
+    }
+
+    var found = [];
+    function Search() {
+        var status = 1;
+        var word = document.getElementById("schkey").value.toUpperCase();
+        if (word.split(" ").length != 1 || word.length <= 2) {
+            window.alert("Por favor ingrese sólo palabras válidas y de más de dos letras.");
+            return;
+        } else {
+            for (c in found) {
+                if (found[c].split("|")[0] == word) {
+                    window.alert("La palabra ya fue encontrada anteriormente.");
+                    return;
+                }
+            }
+
+            word = word.split("");
+            console.log(word);
+            var matches = []
+            for (var y = 1; y <= tableRows; y++) {
+                for (var x = 1; x <= tableCols; x++) {
+                    if (document.getElementById(`${x}-${y}`).innerHTML == word[0]) {
+                        matches.push(`${x}-${y}`);
+                    }
+                }
+            }
+
+            if (matches.length != 0) {
+                console.log(matches)
+
+                for (var s in matches) {
+                    var steps = 0;
+                    console.log("Revisando letra ", document.getElementById(matches[s]))
+                    for (var y = parseInt(matches[s].split("-")[1]) - 1; y <= parseInt(matches[s].split("-")[1]) + 1; y++) {
+                        for (var x = parseInt(matches[s].split("-")[0]) - 1; x <= parseInt(matches[s].split("-")[0]) + 1; x++) {
+                            steps++;
+                            try {
+                                if ((`${x}-${y}`) != matches[s] && document.getElementById(`${x}-${y}`).innerHTML == word[1]) {
+                                    console.log("Letra adyacente", document.getElementById(`${x}-${y}`));
+
+                                    var result = checkWord(parseInt(matches[s].split("-")[0]), parseInt(matches[s].split("-")[1]), word, steps);
+                                    console.log(result)
+                                    if (result != false) {
+                                        var rColor = `rgb(${96 + Math.round(Math.random() * 160)},${32 + Math.round(Math.random() * 160)},${32 + Math.round(Math.random() * 160)})`;
+                                        for (var p in result) {
+                                            if (document.getElementById(`${result[p]}`).style.backgroundColor) {
+                                                document.getElementById(`${result[p]}`).style.backgroundColor = `rgb(${32 + Math.round(Math.random() * 64)},${32 + Math.round(Math.random() * 64)},${32 + Math.round(Math.random() * 64)})`;
+                                            } else {
+                                                document.getElementById(`${result[p]}`).style.backgroundColor = rColor;
+                                            }
+                                        }
+                                        found.push(`${word.join("")}|${rColor}`);
+                                        showFound();
+                                        return;
+                                    }
+                                }
+                            } catch (e) { }
+
+
+                        }
+                    }
+                }
+            }
+            window.alert("No se encontraron coincidencias.");
+        }
+    }
+
+    function checkWord(x, y, word, steps) {
+        var cursorX = x;
+        var cursorY = y;
+        var result = true;
+        var correctWord = [];
+        switch (steps) {
+            case 1:
+                for (var i in word) {
+                    if (document.getElementById(`${cursorX}-${cursorY}`).innerHTML == word[i]) {
+                        console.log(document.getElementById(`${cursorX}-${cursorY}`).innerHTML);
+                        correctWord.push(`${cursorX}-${cursorY}`);
+                    } else {
+                        result = false;
+                        break;
+                    }
+                    cursorX--; cursorY--;
+                }
+                break;
+
+            case 2:
+                for (var i in word) {
+                    if (document.getElementById(`${cursorX}-${cursorY}`).innerHTML == word[i]) {
+                        console.log(document.getElementById(`${cursorX}-${cursorY}`).innerHTML);
+                        correctWord.push(`${cursorX}-${cursorY}`);
+                    } else {
+                        result = false;
+                        break;
+                    }
+                    cursorY--;
+                }
+                break;
+
+            case 3:
+                for (var i in word) {
+                    if (document.getElementById(`${cursorX}-${cursorY}`).innerHTML == word[i]) {
+                        console.log(document.getElementById(`${cursorX}-${cursorY}`).innerHTML);
+                        correctWord.push(`${cursorX}-${cursorY}`);
+                    } else {
+                        result = false;
+                        break;
+                    }
+                    cursorX++; cursorY--;
+                }
+                break;
+
+            case 4:
+                for (var i in word) {
+                    if (document.getElementById(`${cursorX}-${cursorY}`).innerHTML == word[i]) {
+                        console.log(document.getElementById(`${cursorX}-${cursorY}`).innerHTML);
+                        correctWord.push(`${cursorX}-${cursorY}`);
+                    } else {
+                        result = false;
+                        break;
+                    }
+                    cursorX--;;
+                }
+                break;
+
+            case 6:
+                for (var i in word) {
+                    if (document.getElementById(`${cursorX}-${cursorY}`).innerHTML == word[i]) {
+                        console.log(document.getElementById(`${cursorX}-${cursorY}`).innerHTML);
+                        correctWord.push(`${cursorX}-${cursorY}`);
+                    } else {
+                        result = false;
+                        break;
+                    }
+                    cursorX++;
+                }
+                break;
+
+            case 7:
+                for (var i in word) {
+                    if (document.getElementById(`${cursorX}-${cursorY}`).innerHTML == word[i]) {
+                        console.log(document.getElementById(`${cursorX}-${cursorY}`).innerHTML);
+                        correctWord.push(`${cursorX}-${cursorY}`);
+                    } else {
+                        result = false;
+                        break;
+                    }
+                    cursorX--; cursorY++;
+                }
+                break;
+
+            case 8:
+                for (var i in word) {
+                    if (document.getElementById(`${cursorX}-${cursorY}`).innerHTML == word[i]) {
+                        console.log(document.getElementById(`${cursorX}-${cursorY}`).innerHTML);
+                        correctWord.push(`${cursorX}-${cursorY}`);
+                    } else {
+                        result = false;
+                        break;
+                    }
+                    cursorY++;
+                }
+                break;
+
+            case 9:
+                for (var i in word) {
+                    if (document.getElementById(`${cursorX}-${cursorY}`).innerHTML == word[i]) {
+                        console.log(document.getElementById(`${cursorX}-${cursorY}`).innerHTML);
+                        correctWord.push(`${cursorX}-${cursorY}`);
+                    } else {
+                        result = false;
+                        break;
+                    }
+                    cursorX++; cursorY++;
+                }
+                break;
+        }
+        if (result == false) {
+            return result;
+        } else {
+            return correctWord;
+        }
+    }
+    function showFound() {
+        var foundTable = document.getElementById("foundTable");
+        document.getElementById("foundWordsDiv").style.display = "";
+        foundTable.innerHTML = "";
+        for (e in found) {
+            var n = document.createElement("div");
+            console.log(found[e].split("|")[0])
+            n.innerHTML = found[e].split("|")[0];
+            n.style.backgroundColor = found[e].split("|")[1];
+            foundTable.appendChild(n);
+        }
+    }
+</script>
+
+</html>

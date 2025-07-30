@@ -1,0 +1,15 @@
+Para ejecutar el juego:
+Se necesita tener descargado Node en la computadora.
+1. Abre el archivo "Run" o "Run.bat"
+2. Ingresa en el navegador el enlace "127.0.0.1:8080" y esto te seleccionará como "Jugador 1"
+3. Ingresa nuevamente el enlace en otra pestaña, ventana o computadora y serás "Jugador 2"
+
+Dentro del juego
+En las carreras de Fórmula 1, al iniciar, se da una cuenta atrás a medida que se encienden las luces,
+luego estas se apagan aleatoriamente y en este momento tendrá ventaja quien tenga el mejor tiempo de reacción.
+
+Esto también aplica a las competencias a nivel educativo de F1InSchools, aunque es totalmente simulado.
+
+Este programa imita esta simulación, usando semáforos que se irán encendiendo y, cuando todos cambien,
+los jugadores tendrán que hacer click o presionar el espacio para "acelerar" y el juego decidirá
+quién tiene el mejor tiempo de reacción.

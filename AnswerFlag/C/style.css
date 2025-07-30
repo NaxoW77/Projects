@@ -1,0 +1,240 @@
+body,
+html {
+  height: 100%;
+  font-family: 'Comic Sans MS', 'Comic Sans';
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("img/bg1.png");
+  transition: 1s;
+  animation: bgNormal 10s linear infinite;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-size: 100% 100%;
+}
+
+@keyframes bgNormal {
+  0% {
+    backdrop-filter: hue-rotate(0deg);
+  }
+
+  50% {
+    backdrop-filter: hue-rotate(60deg);
+  }
+
+  100% {
+    backdrop-filter: hue-rotate(0deg);
+  }
+}
+
+@keyframes bgAlt {
+  0% {
+    backdrop-filter: hue-rotate(80deg);
+  }
+
+  50% {
+    backdrop-filter: hue-rotate(100deg);
+  }
+
+  100% {
+    backdrop-filter: hue-rotate(80deg);
+  }
+}
+
+@keyframes bgHard {
+  0% {
+    backdrop-filter: hue-rotate(190deg);
+  }
+
+  50% {
+    backdrop-filter: hue-rotate(240deg);
+  }
+
+  100% {
+    backdrop-filter: hue-rotate(190deg);
+  }
+}
+
+h1,div,h2,h3,h4,h5,h6,p,img{
+  font-family: 'Comic Sans MS', 'Comic Sans';
+  user-select: none;
+}
+
+.playerContainer {
+  background-color: rgba(255, 255, 255, 0);
+  width: 900px;
+  height: 300px;
+  display: flex;
+  padding: 50px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 1%;
+}
+
+.playerContainer > div {
+  border-radius: 3px;
+  padding: 0px;
+  margin: 30px;
+  background-color: rgb(177, 177, 177);
+  border-radius: 5px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.questionContainer {
+  background-color: rgba(255, 255, 255, 0);
+  width: auto;
+  height: 300px;
+  display: flex;
+  margin-top: 50px;
+  padding: 50px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: -7%;
+  margin-bottom: -10%;
+}
+
+.questionContainer > div {
+  border-radius: 3px;
+  padding: 0px;
+  margin: 30px;
+  background-color: rgb(177, 177, 177);
+  border-radius: 5px;
+  font-size: 25px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.questionContainer > div:hover{
+  filter: brightness(1.2) saturate(0.8);
+}
+
+.questionContainer .capt{
+  background-color: blueviolet;
+  font-size: 70px;
+  border: none;
+  padding: 0px;
+}
+
+#q1,#q1>div{
+  background-color: rgb(153, 43, 43);
+  transition: 0.3s;
+}
+
+#q2,#q2>div{
+  background-color: rgb(43, 54, 153);
+  transition: 0.3s;
+}
+
+#q3,#q3>div{
+  background-color: rgb(87, 153, 43);
+  transition: 0.3s;
+}
+
+#q4,#q4>div{
+  background-color: rgb(151, 153, 43);
+  transition: 0.3s;
+}
+
+.questionContainer > div > div {
+  background-color: aqua;
+  border-left: 2px solid black;
+  padding: 20px;
+  margin-left: 20px;
+  border-radius: 5px;
+}
+
+#resultsSection > .playerContainer {
+  top: -3%;
+}
+
+img{
+  min-width: 1px;
+  min-height: 1px;
+}
+
+section {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+
+section > h1 {
+  font-size: 65px;
+  color: white;
+  text-align: center;
+  user-select: none;
+  position: absolute;
+  top: 3%;
+  padding: 50px;
+  padding-top: 0;
+  margin: 0;
+}
+
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+img.disabled {
+  filter: grayscale(100%);
+}
+
+div.disabled {
+  filter: grayscale(100%);
+}
+
+div.selected { 
+  filter: brightness(0.8);
+  background-color: aqua;
+}
+
+div:has(button) {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  top: 85%;
+  position: absolute;
+}
+
+.hidden{
+  display: none;
+}
+
+button {
+  width: 300px;
+  height: 100px;
+  font-size: 40px;
+  border-radius: 7px;
+  border: 3px solid rgb(0, 0, 0);
+  position: absolute;
+}
+
+section.disabled {
+  display: none;
+}
+
+button {
+  background-color: rgb(18, 104, 18);
+  color: white;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:hover {
+  filter: brightness(1.2);
+}

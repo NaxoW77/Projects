@@ -1,0 +1,15 @@
+{
+  "name": "reflejo-f1-electron",
+  "version": "1.0.0",
+  "description": "f1",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win portable"
+  },
+  "author": "apuy",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^36.4.0"
+  }
+}

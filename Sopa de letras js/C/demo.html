@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Image OCR with Tesseract.js</title>
+    <!-- Include Tailwind CSS from a CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" referrerpolicy="no-referrer">
+    <style>
+        /* Custom styles for improved UI */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.card {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 600px;
+}
+.btn-primary {
+    background-color: #007BFF;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container">
+        <div class="card">
+            <h1 class="text-2xl font-semibold mb-4">Image OCR Web App</h1>
+
+            <div class="mb-4">
+                <input type="file" id="imageInput" accept="image/*" class="p-2 border rounded-lg w-full">
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="performOCR()" class="btn-primary w-full">Perform OCR</button>
+            </div>
+
+            <div id="result" class="bg-white p-4 rounded-lg shadow-md"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.2/tesseract.min.js"></script>
+    <script>
+        async function performOCR() {
+            const imageInput = document.getElementById('imageInput');
+            const resultElement = document.getElementById('result');
+        
+            if (imageInput.files.length === 0) {
+                resultElement.textContent = 'Please select an image.';
+                return;
+            }
+        
+            const imageFile = imageInput.files[0];
+            const { data: { text } } = await Tesseract.recognize(imageFile);
+            resultElement.textContent = 'Extracted Text: ' + text;
+        }
+    </script>
+</body>
+</html>

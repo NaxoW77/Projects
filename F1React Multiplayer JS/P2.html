@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>F1 Start Timer</title>
+  <meta name="theme-color" content="#ffffff">
+  <style>
+body, html {
+  height: 100%;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.light {
+  border-radius: 100%;
+  background: #222;
+  margin: 10px;
+}
+
+.light::before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+.light-strip.on .light:nth-child(1n+3) {
+  background: red;
+}
+
+.light-strip.go .light:nth-child(1n+3) {
+  background: rgb(55, 255, 0);
+}
+
+
+.f1-lights {
+  display: flex;
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+}
+
+.light-strip {
+  background: black;
+  border-radius: 11px;
+  margin: 0 2px;
+  position: relative;
+  flex: 1;
+}
+
+@media (min-width: 435px) {
+  .light-strip {
+    margin: 0 5px;
+    border-radius: 14px;
+  }
+}
+
+.back-board {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 50%;
+  height: 5%;
+  background: #000;
+  transform: translateY(-50%);
+}
+
+p {
+  font-size: 18px;
+  text-align: center;
+  line-height: 1.4;
+  margin: 1em;
+  margin-bottom: 0;
+}
+
+.time {
+  font-size: 90px;
+  font-size: 12vw;
+  line-height: 1;
+  margin: 1rem;
+  text-transform: uppercase;
+  will-change: transform;
+  text-align: center;
+  user-select: none;
+}
+
+.time.anim {
+  animation: bang 0.1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.best, .credit {
+  font-size: 36px;
+  text-align: center;
+  line-height: 1.4;
+  user-select: none;
+}
+
+@keyframes bang {
+  from {
+    transform: scale(2);
+  }
+}
+
+a:link {
+  text-decoration: none;
+}
+
+@keyframes blink {
+  0% {opacity: 0;}
+  50% {opacity: 1;}
+  75% {opacity: 1;}
+  100% {opacity: 0;}
+}
+  </style>
+</head>
+<body>
+  <h1 id="msg" style="user-select: none;display: none;font-size:78px;text-align:center"></h1>
+
+  <div class="f1-lights">
+    <div class="back-board"></div>
+    <div class="light-strip">
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+    </div>
+    <div class="light-strip">
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+    </div>
+    <div class="light-strip">
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+    </div>
+    <div class="light-strip">
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+    </div>
+    <div class="light-strip">
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+    </div>
+  </div>
+  
+  <div class="results">
+    <div class="time">0.000</div>
+    <div class="best">Best Time: <span>00.000</span></div>
+  </div>
+</body>
+<script>
+  const lights = Array.prototype.slice.call(document.querySelectorAll('.light-strip'));
+const time = document.querySelector('.time');
+const best = document.querySelector('.best span');
+const stMsg = document.getElementById("msg");
+let bestTime = 0
+let lightsOutTime = 0;
+let raf;
+let timeout;
+
+function start(delay) {
+  for (const light of lights) {
+    light.classList.remove('on');
+    light.classList.remove("go")
+  }
+  
+  time.textContent = '0.000';
+  time.style.color = "black"
+  document.body.background=""
+  time.classList.remove('anim');
+  
+  lightsOutTime = 0;
+  let lightsOn = 0;
+  const lightsStart = performance.now();
+  
+  function frame(now) {
+    const toLight = Math.floor((now - lightsStart) / 1000) + 1;
+    
+    if (toLight > lightsOn) {
+      for (const light of lights.slice(0, toLight)) {
+        light.classList.add('on');
+      }
+    }
+    
+    if (toLight < 5) {
+      raf = requestAnimationFrame(frame);
+    }
+    else {
+      timeout = setTimeout(() => {
+        for (const light of lights) {
+          light.classList.remove('on');
+          
+        }
+        lightsOutTime = performance.now();
+      }, delay);
+    }
+  }
+  
+  raf = requestAnimationFrame(frame);
+}
+
+function tap(event) {
+  event.preventDefault();
+  let timeStamp = performance.now();
+  end(timeStamp);
+}
+
+function end(timeStamp) {
+  cancelAnimationFrame(raf);
+  clearTimeout(timeout);
+  
+  if (!lightsOutTime) {
+    stMsg.innerHTML="Descalificado";
+    stMsg.style.color="red";
+    time.textContent = "Jump start";
+    time.style.color = "red"
+    time.classList.add('anim');
+    sendReq(`res_time|P2|999999`);
+    game=3
+    return;
+  }
+  else {
+
+    const thisTime = Math.round(timeStamp - lightsOutTime);
+    time.textContent = formatTime(thisTime);
+    sendReq(`res_time|P2|${thisTime}`);
+
+    game=3
+    
+    if (thisTime < bestTime || bestTime==-1) {
+      bestTime = thisTime;
+      sendReq(`req_best|P2|${bestTime}`)
+      best.textContent = time.textContent;
+    }
+    
+
+    time.classList.add('anim');
+  }
+}
+
+function checkWin(result){
+  if(result=="P2"){
+    stMsg.innerHTML="PLAYER 2 WINS";stMsg.style.display="";stMsg.style.color="green";
+    time.style.color = "green";
+  }else if (result=="P1"){
+    stMsg.innerHTML="PLAYER 2 LOSES";stMsg.style.display="";stMsg.style.color="red";
+    time.style.color = "red";
+  }else{
+    stMsg.innerHTML="TIE";stMsg.style.display="";stMsg.style.color="yellow";
+    time.style.color = "yellow";
+  }
+  stMsg.style.animation = "blink 1s infinite linear";
+}
+
+function formatTime(time) {
+  let outputTime = (time / 1000).toFixed(3);
+  return outputTime.replace(",",".");
+}
+
+var game=0
+var socket;
+function prepare(){
+  document.addEventListener('mousedown', event => {
+    if (event.button === 0 && game==2) sendReq("req_reset");
+  }, {passive: false});
+  document.addEventListener('keydown', event => {
+    if (event.key == ' ' && game==2) sendReq("req_reset");
+  }, {passive: false});
+  document.addEventListener('mousedown', event => {
+    if (event.button === 0 && game==1) tap(event);
+  }, {passive: false});
+  document.addEventListener('keydown', event => {
+    if (event.key == ' ' && game==1) tap(event);
+  }, {passive: false});
+  document.addEventListener('mousedown', event => {
+    if (event.button === 0 && game==0) sendReq("req_start");
+  }, {passive: false});
+  document.addEventListener('keydown', event => {
+    if (event.key == ' ' && game==0) sendReq("req_start");
+  }, {passive: false});
+
+  const socketURL = 'ws://' + window.location.host + '/server'
+  socket = new WebSocket(socketURL);
+  socket.onopen = () => {
+    socket.send("req_con|P2")
+  }
+
+  socket.onmessage = e => {
+    if(event.data.split("|")[0] == "res_ok"){
+      bestTime = event.data.split("|")[1]
+      if(event.data.split("|")[1] > -1){
+        best.textContent=formatTime(event.data.split("|")[1]);
+      }else{
+        best.textContent="No record";
+      }
+    }
+
+    let playerID = window.location.href
+    playerID="Player "+playerID.substr(playerID.length - 1)
+    msg.textContent=playerID
+    msg.style.display="";
+
+    
+    if(event.data.split("|")[0] == "res_start"){
+      game=1
+      start(`${event.data.split("|")[1]}`);
+    }
+    if(event.data == "res_reset"){
+      window.location.reload();
+    }
+    if(event.data.split("|")[0] == "res_result"){
+      game=2
+      checkWin(`${event.data.split("|")[1]}`);
+    }
+  }
+}
+
+function sendReq(msg){
+  socket.send(msg)
+}
+
+addEventListener('load', prepare, false);;
+</script>
+</html>
