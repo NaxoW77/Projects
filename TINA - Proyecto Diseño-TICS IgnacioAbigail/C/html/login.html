@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/vnd.icon" href="../img/LogoIcon.ico">
+</head>
+
+<body>
+    <div class="login-main">
+        <div class="login-container">
+            <div class="login-form">
+                <h1 class="login-title login">Iniciar sesión</h1>
+                <h2>Nombre <br><input type="text" id="logName" placeholder="Nombre: "></h2>
+                <h2>Contraseña <br><input type="password" id="logPass" placeholder="Contraseña: "></h2>
+
+                <button class="login-button" onclick="checkLogin()" id="subBtn">Ingresar</button>
+                <h3>¿No tienes cuenta? <button class="login-a" onclick="redirectTo('/register')" id="swBtn">¡Registrate!</button>
+                </h3>
+
+            </div>
+        </div>
+        <div class="login-status-container" id="statusMsg">
+            <h2 class="login-status" style="opacity: 1">Hola</h2>
+        </div>
+    </div>
+    <div class="main-footer">
+        <p>TINA puede cometer errores. Soporte: <a href="mailto:tina-suport@tina.com">tina-support@tina.com</a> | ©TINA
+            2025. Todos los derechos reservados.</p>
+    </div>
+</body>
+<script src="../js/login.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/video.js"></script>
+
+</html>

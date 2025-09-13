@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/vnd.icon" href="../img/LogoIcon.ico">
+
+</head>
+
+<div class="login-main">
+    <div class="login-container">
+        <div class="login-form">
+            <h1 class="login-title register">Crear usuario</h1>
+
+            <h2>Nombre: <br><input placeholder="[Escriba su nombre]" type="text" id="logName"></h2>
+
+            <h2>Apellidos: <br><input placeholder="[Escriba sus apellidos]" type="text" id="logLastName"></h2>
+
+            <h2>Fecha de nacimiento: <br><input type="date" id="logbDate"></h2>
+
+            <h2>Correo electrónico: <br><input placeholder="[Escriba su correo]" type="text" id="logEmail"></h2>
+
+            <h2>Contraseña: <br><input placeholder="[Escriba su contraseña]" type="password" id="logPass"></h2>
+
+            <button class="login-button bold" onclick="checkRegister()" id="subBtn">Crear usuario</button>
+
+            <h3>¿Ya tienes cuenta? <button class="login-a" onclick="redirectTo('/login')" id="swBtn">¡Inicia
+                    sesión!</button></h3>
+        </div>
+
+    </div>
+    <div class="login-status-container" id="statusMsg">
+        <h2 class="login-status"></h2>
+    </div>
+</div>
+
+<div class="main-footer">
+    <p>TINA puede cometer errores. Soporte: <a href="mailto:tina-suport@tina.com">tina-support@tina.com</a> | ©TINA
+        2025. Todos los derechos reservados.</p>
+</div>
+
+</body>
+<script src="../js/login.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/video.js"></script>
+
+</html>

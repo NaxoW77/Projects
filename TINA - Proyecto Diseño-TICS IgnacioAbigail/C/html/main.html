@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página principal</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/vnd.icon" href="../img/LogoIcon.ico">
+
+</head>
+
+<body>
+  <div class="main-header">
+    <div class="main-header-left">
+      <img src="../img/LogoGrande.png" alt="">
+      <h1>TINA</h1>
+    </div>
+    <div class="main-header-right">
+      <h2 onclick="logOut()"> <span id="username">MAIN_USER_PROFILE</span></h2>
+      <img src="../img/usuario.png" alt="">
+    </div>
+  </div>
+
+  <div class="main-container">
+
+
+    <div class="main-container-left">
+      <div class="left-container">
+        <div class="main-intro-container">
+          <div>
+            <h1>¡Bienvenido!</h1>
+
+            <p>Tina es tu asistente de notas y asistencia.</p>
+            <p>Haz click abajo para comenzar.</p>
+
+            <button class="btn-grad" onclick="openChat()">Comenzar</button>
+
+          </div>
+        </div>
+        <br>
+
+        <div class="main-chat-container">
+          <div class="main-chat-header">
+            <h1>Chat con TINA</h1>
+            <div>
+              <button onclick="toggleTTS()" style="display: none;" id="ttsButton">Leer mensajes</button>
+              <button class="btn-grad" onclick="closeChat()"><img src="../img/proximo.png" alt=""></button>
+            </div>
+          </div>
+          <div class="main-chat-messages">
+            <div class="main-chat-message bot">
+              <h1>TINA</h1>
+              <div>
+                <p>Hola. ¿En que puedo ayudarte?</p>
+              </div>
+            </div>
+
+          </div>
+          <div class="main-chat-input">
+            <textarea id="chatInput" onkeypress="clickSend(event)" placeholder="Escribe un mensaje..."></textarea>
+            <button class="btn-grad" onclick="sendMessage();" id="chatButton"><img class="enviar"
+                src="../img/enviar-mensaje.png" alt=""></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container-right">
+      <div class="right-container">
+        <div class="main-char-container">
+          <img id="charImg" src="../img/Tinanormal.png" alt="">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="main-footer">
+      <p>TINA puede cometer errores. Soporte: <a href="mailto:tina-suport@tina.com">tina-support@tina.com</a> | ©TINA
+        2025. Todos los derechos reservados.</p>
+    </div>
+
+</body>
+<script src="../js/main.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/video.js"></script>
+
+</html>

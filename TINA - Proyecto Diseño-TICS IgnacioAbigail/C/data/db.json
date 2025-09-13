@@ -1,0 +1,108 @@
+{
+  "content": [
+    {
+      "name": "admin",
+      "lastName": "admin",
+      "bDate": "0001-01-01",
+      "email": "admin@admin.com",
+      "pass": "admin",
+      "role": "Administrador",
+      "grades": [
+        {
+          "assignment": "Español",
+          "grade": "100"
+        },
+        {
+          "assignment": "Matemáticas",
+          "grade": "100"
+        },
+        {
+          "assignment": "Ciencias",
+          "grade": "100"
+        },
+        {
+          "assignment": "Estudios Sociales",
+          "grade": "100"
+        }
+      ]
+    },
+    {
+      "name": "Juan",
+      "lastName": "Castro Mora",
+      "bDate": "2004-04-08",
+      "email": "juan@gmail.com",
+      "pass": "juan1234",
+      "role": "Estudiante",
+      "grades": [
+        {
+          "assignment": "Español",
+          "grade": "15"
+        },
+        {
+          "assignment": "Matemáticas",
+          "grade": "93"
+        },
+        {
+          "assignment": "Ciencias",
+          "grade": "23"
+        },
+        {
+          "assignment": "Estudios Sociales",
+          "grade": "40"
+        }
+      ]
+    },
+    {
+      "name": "Maria",
+      "lastName": "Fernández Gonzáles",
+      "bDate": "2014-03-02",
+      "email": "maria@gmail.com",
+      "pass": "MariaGonzales3",
+      "role": "Estudiante",
+      "grades": [
+        {
+          "assignment": "Español",
+          "grade": "100"
+        },
+        {
+          "assignment": "Matemáticas",
+          "grade": ""
+        },
+        {
+          "assignment": "Ciencias",
+          "grade": "87"
+        },
+        {
+          "assignment": "Estudios Sociales",
+          "grade": "0"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "lastName": "test",
+      "bDate": "0011-11-11",
+      "email": "test@test",
+      "pass": "testtest",
+      "role": "Estudiante",
+      "grades": [
+        {
+          "assignment": "Español",
+          "grade": ""
+        },
+        {
+          "assignment": "Matemáticas",
+          "grade": ""
+        },
+        {
+          "assignment": "Ciencias",
+          "grade": ""
+        },
+        {
+          "assignment": "Estudios Sociales",
+          "grade": ""
+        }
+      ]
+    }
+  ]
+}

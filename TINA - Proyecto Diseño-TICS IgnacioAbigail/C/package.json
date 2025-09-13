@@ -1,0 +1,16 @@
+{
+  "name": "proyectoprogra_tina",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "author": "APUY",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-ws": "^5.0.2"
+  }
+}
