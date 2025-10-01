@@ -1,0 +1,264 @@
+* {
+  border-radius: 5px;
+  font-size: clamp(0.8rem, 3.8vw, 1.1rem);
+}
+
+body {
+  background-color: rgb(181, 234, 250);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+div {
+  border: 1px solid black;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.274);
+}
+
+h1 {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+h1.title {
+  font-size: clamp(1.5rem, 4.5vw, 2.5rem);
+  font-weight: bold;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+img {
+  max-width: 1000px;
+  border: 1px solid black;
+}
+
+a {
+  color: rgb(42, 42, 218);
+  text-decoration: none;
+}
+a:hover {
+  color: rgb(0, 119, 231);
+  text-decoration: underline;
+}
+
+label img {
+  max-width: 1000px;
+  align-self: baseline;
+  border: 1px solid black;
+}
+
+label:has(input:checked):not(.disabled) {
+  background-color: rgb(187, 241, 255);
+  border: 3px outset rgb(141, 197, 211);
+}
+
+.imgDiv {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 0px;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+}
+
+.imgDiv img {
+  max-width: 100%;
+}
+
+
+.respDiv {
+  background-color: rgb(200, 255, 200);
+  border: 3px outset rgb(141, 211, 141);
+  padding: 20px;
+  margin-top: 10px;
+  width: 95%;
+}
+
+.respDiv h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.randButton {
+  margin-bottom: 25px;
+}
+
+#randButton {
+  padding: 10px;
+  font-size: 16px;
+  width: 150px;
+  cursor: pointer;
+  background-color: rgb(149, 255, 172);
+}
+
+#randButton.rand {
+  background-color: rgb(255, 221, 157);
+}
+
+#randButton:hover {
+  filter: brightness(1.15);
+}
+
+#randButton:active {
+  filter: brightness(0.9  );
+}
+
+.correct {
+  background-color: rgba(164, 231, 164, 0.747);
+  border: 3px outset green;
+  padding: 20px;
+  margin-top: 10px;
+}
+.incorrect {
+  background-color: rgba(255, 170, 170, 0.562);
+  border: 3px outset red;
+  padding: 20px;
+  margin-top: 10px;
+}
+.unanswered {
+  background-color: rgba(255, 255, 200, 0.5);
+  border: 3px outset orange;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+.content {
+  max-width: 100vh;
+  width: 100%;
+  padding: 40px;
+  padding-bottom: 15px;
+}
+
+@media (max-width: 800px) {
+  .content {
+    width: 75%;
+  }
+}
+
+.questionDiv {
+  width: 100%;
+}
+
+.content h3 {
+  text-align: left;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1.8;
+}
+
+.content > div {
+  text-align: left;
+  margin-bottom: 30px;
+  padding: 40px;
+  width: 92%;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  width: 100%;
+  line-height: 1.8;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+p br {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  height: 10px;
+}
+
+span.indent {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  text-indent: 5px;
+}
+
+span.center {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+span.quote {
+  display: block;
+  width: auto;
+  text-align: justify;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  background-color: #838de02a;
+  border: 3px solid #838de02a;
+  padding: 15px;
+  font-style: italic;
+}
+
+span.final {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.evaluation {
+  position: fixed;
+  top: 1%;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+}
+
+.evaluation button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 16px;
+  width: 150px;
+  cursor: pointer;
+}
+
+label {
+  cursor: pointer;
+  width: 100%;
+  padding: 10px;
+  margin-top: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.082);
+  background-color: rgba(175, 175, 175, 0.027);
+}
+label:hover {
+  background-color: rgba(255, 255, 255, 0.466);
+}
