@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del clima IMN</title>
+    <style>
+        :root {
+            --hv-color: rgb(255, 213, 173);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex: 0;
+            flex-direction: column;
+            background: url('https://www.imn.ac.cr/imagenes-sat/TCLCR.gif');
+            background-color: #212121;
+            background-size: auto 100%;
+            background-position: 50% 0;
+            background-repeat: no-repeat;
+            font-family: sans-serif;
+            height: 100vh;
+            color: white;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        #provTxt,
+        #resTxt {
+            color: rgb(255, 255, 255);
+            font-size: 23px;
+            text-shadow:
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+        }
+
+        select {
+            min-width: 25%;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid black;
+            font-size: 20px;
+        }
+
+        button {
+            width: 25%;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid black;
+            font-size: 15px;
+        }
+
+        a,
+        a:visited {
+            background-color: #0000003f;
+            border: 1px solid rgb(0, 217, 255);
+            border-radius: 3px;
+            padding: 15px;
+            color: rgb(0, 217, 255);
+            text-decoration: none;
+            text-shadow:
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+        }
+
+        a:hover {
+            background-color: #0000008b;
+            border: 1px solid rgb(255, 132, 0);
+            color: rgb(255, 132, 0);
+
+        }
+
+        button:hover {
+            background-color: var(--hv-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .inactive>td {
+            background-color: rgb(231, 231, 231);
+        }
+
+        .header,
+        h1,
+        h2 {
+            text-align: center;
+            text-shadow:
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+        }
+
+        h4 {
+            margin: 25px;
+        }
+
+        .resTitle {
+            margin-bottom: 10px;
+        }
+
+        .mainPage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-height: 100vh;
+        }
+
+        .queryPage {
+            border: 1px solid rgb(194, 116, 43);
+            border-radius: 7px;
+            box-shadow: 0 0 15px black;
+            background-color: rgba(255, 146, 51, 0.186);
+            padding: 2.2%;
+            width: 40%;
+            text-align: center;
+            margin: 0 auto;
+            margin-top: 1%;
+        }
+
+        .locSel {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .tableScroll {
+            overflow-y: scroll;
+            height: 250px;
+            width: 100%;
+            border: 3px solid rgb(0, 0, 0);
+            border-radius: 3px;
+            margin: 0 auto;
+        }
+
+        .tableScroll.t2 {
+            background-color: rgb(27, 27, 27);
+        }
+
+        .s-1 {
+            height: 5vh;
+        }
+
+        tr:has(td:hover)>td {
+            background-color: var(--hv-color);
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+        }
+
+        table {
+            margin: 0 auto;
+            width: 100%;
+            border-spacing: 0;
+            color: black;
+        }
+
+        tr {
+            width: 100%;
+            height: 50px;
+        }
+
+        th {
+            border: 1px solid black;
+            width: 33%;
+            background-color: rgb(255, 255, 255);
+            user-select: none;
+        }
+
+        td {
+            border: 1px solid black;
+            width: 33%;
+            background-color: rgb(255, 255, 255);
+            user-select: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            body {
+                background-position: 40% 0;
+            }
+
+            .queryPage {
+                width: 80%;
+            }
+
+            th {
+                font-size: 10px;
+            }
+
+            td {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainPage">
+        <div class="header">
+            <h1>Tablas de datos IMN</h1>
+        </div>
+        <div class="queryPage" id="q1">
+
+            <h2>Seleccione una provincia</h2>
+            <select id="provSel">
+                <option value="-1" selected disabled>[Provincia]</option>
+                <option value="0">San José</option>
+                <option value="1">Alajuela</option>
+                <option value="2">Cartago</option>
+                <option value="3">Heredia</option>
+                <option value="4">Puntarenas</option>
+                <option value="5">Guanacaste</option>
+                <option value="6">Limón</option>
+            </select>
+        </div>
+
+        <div class="queryPage hidden" id="q2">
+            <p id="provTxt" class="hidden"></p>
+            <button id="provBtn" class="hidden">Reintentar</button>
+            <div class="locSel hidden">
+                <h2>Seleccione un lugar:</h2>
+                <div class="tableScroll">
+                    <table id="locTable">
+                        <thead>
+                            <tr>
+                                <th>Lugar</th>
+                                <th>Región</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="queryPage hidden" id="r1">
+            <p id="resTxt" class="hidden"></p>
+            <div class="locRes hidden">
+                <h2 class="resTitle">Estación</h2>
+                <h4><a href="" target="_blank">Resumen IMN →</a></h4>
+                <div class="tableScroll t2">
+                    <p></p>
+                    <h2>
+
+                    </h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Temperatura:</th>
+                                <td id="temp">-</td>
+                            </tr>
+                            <tr>
+                                <th>Sensación térmica:</th>
+                                <td id="tempSens">-</td>
+                            </tr>
+                            <tr>
+                                <th>Temperatura máxima:</th>
+                                <td id="tempMax">-</td>
+                            </tr>
+                            <tr>
+                                <th>Temperatura mínima:</th>
+                                <td id="tempMin">-</td>
+                            </tr>
+                            <tr>
+                                <th>Humedad:</th>
+                                <td id="humedad">-</td>
+                            </tr>
+                            <tr>
+                                <th>Velocidad del viento:</th>
+                                <td id="viento">-</td>
+                            </tr>
+                            <tr>
+                                <th>Velocidad del viento máxima:</th>
+                                <td id="vientoMax">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p></p>
+                    <h2>Registros anteriores</h2>
+                    <div id="anterior"></div>
+                </div>
+            </div>
+            <br>
+            <button id="locBtn" class="hidden">Reintentar</button>
+            <button id="backBtn">Volver</button>
+        </div>
+    </div>
+</body>
+<script>
+    let listaRaw = [];
+    let listaLugares = [{
+        "id": 0,
+        "name": "San José",
+        "lugares": []
+    },
+    {
+        "id": 1,
+        "name": "Alajuela",
+        "lugares": []
+    },
+    {
+        "id": 2,
+        "name": "Cartago",
+        "lugares": []
+    },
+    {
+        "id": 3,
+        "name": "Heredia",
+        "lugares": []
+    },
+    {
+        "id": 4,
+        "name": "Puntarenas",
+        "lugares": []
+    },
+    {
+        "id": 5,
+        "name": "Guanacaste",
+        "lugares": []
+    },
+    {
+        "id": 6,
+        "name": "Limón",
+        "lugares": []
+    }];
+
+    let q1 = document.getElementById('q1');
+    let q2 = document.getElementById('q2');
+    let r1 = document.getElementById('r1');
+    let locSel = document.querySelector('.locSel');
+    let locRes = document.querySelector('.locRes');
+    let locTable = document.querySelector('#locTable > tbody');
+    let provTxt = document.getElementById('provTxt');
+    let resTxt = document.getElementById('resTxt');
+    let provBtn = document.querySelector('#provBtn');
+    let locBtn = document.querySelector('#locBtn');
+
+    let backBtn = document.querySelector('#backBtn');
+
+    let provListed = false;
+    document.getElementById('provSel').addEventListener('change', async () => {
+        changedProv();
+    })
+
+    backBtn.addEventListener('click', () => {
+        backBtn.classList.add('hidden');
+        q1.classList.remove('hidden');
+        q2.classList.remove('hidden');
+        r1.classList.add('hidden');
+    })
+
+    provBtn.addEventListener('click', async () => {
+        changedProv();
+        provBtn.disabled = true;
+        provBtn.classList.add('hidden');
+    })
+
+    locBtn.addEventListener('click', async () => {
+        clickRow(retry, true);
+        locBtn.disabled = true;
+        locBtn.classList.add('hidden');
+    })
+
+    window.addEventListener('load', async () => {
+        const queryString = window.location.search;
+
+        const urlParams = new URLSearchParams(queryString);
+
+        const provincia = urlParams.get('provincia');
+        const estacion = urlParams.get('estacion');
+
+        if (provincia != null) {
+            for (x of document.querySelectorAll('#provSel > option')) {
+                if (x.textContent == provincia) {
+                    x.selected = true;
+                    await changedProv();
+
+                    if(estacion != null) {
+                        console.log(document.querySelectorAll('#locTable'))
+                        for (y of document.querySelectorAll('#locTable > tbody > tr > td')) {
+                            if (y.textContent.includes(estacion)) {
+                                y.click();
+                                return;
+                            }
+                        }
+                        
+                        window.location.href = window.location.href.split('&')[0];
+                    }
+
+                    return;
+                }
+            }
+            window.location.href = window.location.href.split('?')[0];
+        }
+
+        console.log(provincia, estacion)
+    })
+
+    async function changedProv() {
+        locTable.innerHTML = "";
+        q2.classList.remove('hidden');
+        provTxt.classList.remove('hidden');
+        provTxt.innerText = "Consultando provincia...";
+        if (!provListed) {
+            provListed = await listLugares();
+            if (!provListed) {
+                provTxt.innerText = "No se pudo realizar la consulta.";
+                provBtn.disabled = false;
+                provBtn.classList.remove('hidden');
+                return true;
+            }
+        }
+        provTxt.classList.add('hidden');
+        locSel.classList.remove('hidden');
+
+        let tdLugares = "";
+        for (x of listaLugares) {
+            if (x.id == document.getElementById('provSel').value) {
+                for (y of x.lugares) {
+                    tdLugares += `<tr href="${y.url}" onclick="clickRow(event)" ${y.estado == 'Inactivo' || y.estado == 'Mantenimiento' ? 'class="inactive"' : ''}>
+                            <td>${y.lugar}</td>
+                            <td>${y.region}</td>
+                            <td>${y.estado}</td>
+                        </tr>`;
+
+                }
+            }
+
+            locTable.innerHTML = tdLugares;
+
+        }
+    }
+
+    async function listLugares() {
+        document.getElementById('provTxt').innerText = "Consultando provincia...";
+        const url = 'https://soft-base-e57d.ignacioapuy.workers.dev?url=https://www.imn.ac.cr/web/imn/estaciones-automaticas';
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                cache: 'no-store',
+                headers: {
+
+                }
+            });
+
+            const data = await response.text();
+            console.log(data);
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+
+            const dLocs = doc.querySelectorAll('tr');
+            console.log(dLocs);
+
+            for (x of dLocs) {
+
+                if (x.querySelector('th') != null) continue;
+                if (x.querySelector('td') == null) continue;
+                console.log(x.querySelector('td').innerHTML);
+                let data = x.querySelectorAll('td');
+                let lugar = data[0].innerHTML.trim();
+                if (lugar.includes("<p")) {
+                    lugar = data[0].querySelector("p").innerHTML.trim();
+                }
+
+                let rawRegion = data[1];
+                if (rawRegion.querySelector("p") != null) {
+                    rawRegion = rawRegion.querySelector("p");
+                }
+                if (rawRegion.querySelector("span") != null) {
+                    rawRegion = rawRegion.querySelector("span");
+                }
+
+                let region = rawRegion.innerHTML.trim().split(" - ")[0];
+
+                let provincia = rawRegion.innerHTML.trim().split(" - ")[1];
+
+                let estado = data[2];
+                if (estado.querySelector("span") != null) {
+                    estado = estado.querySelector("span").innerHTML;
+                } else {
+                    estado = estado.innerHTML;
+                }
+
+                estado = estado.replace("ctiva", "ctivo").replace("&nbsp;", "").trim();
+                let url = data[3].querySelector("a").href;
+
+                listaRaw.push({
+                    lugar: lugar,
+                    region: region,
+                    provincia: provincia,
+                    estado: estado,
+                    url: url
+                })
+            }
+
+            console.log(listaRaw);
+
+            for (x of listaRaw) {
+                switch (x.provincia) {
+                    case "San José":
+                        listaLugares[0].lugares.push(x);
+                        break;
+                    case "Alajuela":
+                        listaLugares[1].lugares.push(x);
+                        break;
+                    case "Cartago":
+                        listaLugares[2].lugares.push(x);
+                        break;
+                    case "Heredia":
+                        listaLugares[3].lugares.push(x);
+                        break;
+                    case "Puntarenas":
+                        listaLugares[4].lugares.push(x);
+                        break;
+                    case "Guanacaste":
+                        listaLugares[5].lugares.push(x);
+                        break;
+                    case "Limón":
+                        listaLugares[6].lugares.push(x);
+                        break;
+                }
+            }
+
+            for (z in listaLugares) {
+                listaLugares[z].lugares.sort((a, b) => {
+                    if (a.lugar < b.lugar) {
+                        return -1;
+                    }
+                    if (a.lugar > b.lugar) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            }
+
+            return true;
+
+        } catch (error) {
+            console.log("listLugares error: " + error.message);
+            return false;
+        }
+    }
+
+    let wModel = {};
+
+    let retry = "";
+
+    async function clickRow(event, r = false) {
+        locBtn.classList.add('hidden');
+        locRes.classList.add('hidden');
+        wModel = {
+            nombre: "",
+            fecha: "",
+            url: "",
+            temperatura: "",
+            tempSens: "",
+            tempMax: "",
+            tempMin: "",
+            humedad: "",
+            viento: "",
+            vientoMax: "",
+            anterior: [
+                {
+                    fecha: "",
+                    temperatura: ""
+                }
+            ]
+        }
+        if (r) {
+            event = retry;
+        } else {
+            retry = event;
+        }
+
+        q1.classList.add('hidden');
+        q2.classList.add('hidden');
+        r1.classList.remove('hidden');
+        resTxt.classList.remove('hidden');
+        resTxt.innerText = "Consultando ubicación...";
+        backBtn.classList.add('hidden');
+        let queryURL = event.target.parentNode.getAttribute('href');
+
+        try {
+            const response = await fetch("https://soft-base-e57d.ignacioapuy.workers.dev?url=" + queryURL, {
+                method: 'GET',
+                cache: 'no-store',
+                headers: {
+
+                }
+            });
+
+            const data = await response.text();
+            console.log(data);
+
+            const parser = new DOMParser();
+            const doc1 = parser.parseFromString(data, 'text/html');
+
+            const dLocs1 = doc1.body;
+            const dTable = "https://www.imn.ac.cr" + doc1.querySelector('#datos').getAttribute('src');
+            console.log(dTable);
+            try {
+                const response = await fetch("https://soft-base-e57d.ignacioapuy.workers.dev?url=" + dTable, {
+                    method: 'GET',
+                    cache: 'no-store',
+                    headers: {
+
+                    }
+                });
+
+                const data = await response.text();
+                console.log(data);
+
+                const parser = new DOMParser();
+                const doc2 = parser.parseFromString(data, 'text/html');
+
+                const dLocs2 = doc2.querySelectorAll('table');
+                console.log(dLocs1);
+                console.log(dLocs2);
+
+                locRes.classList.remove('hidden');
+                const isNullSt = (elem) => (elem && elem.textContent ? elem.textContent.trim() : "-");
+                wModel.nombre = (dLocs1.querySelector("h4")?.innerHTML?.trim()) || "-";
+                wModel.fecha = isNullSt(dLocs2[1]?.rows[1]?.cells[0]);
+                const rawSrc = dLocs1.querySelector("img")?.getAttribute('src') || "";
+                let imgSrc = rawSrc;
+                if (imgSrc) {
+                    if (!imgSrc.startsWith("/especial/")) {
+                        if (!imgSrc.startsWith("/")) {
+                            imgSrc = "/especial/" + imgSrc;
+                        } else {
+                            imgSrc = "/especial" + imgSrc;
+                        }
+                    }
+                }
+                wModel.url = "https://www.imn.ac.cr" + imgSrc;
+                wModel.temperatura = isNullSt(dLocs2[2]?.rows[1]?.cells[1]);
+                wModel.tempSens = isNullSt(dLocs2[2]?.rows[1]?.cells[6]);
+                wModel.tempMax = isNullSt(dLocs2[1]?.rows[1]?.cells[4]);
+                wModel.tempMin = isNullSt(dLocs2[1]?.rows[1]?.cells[5]);
+                wModel.humedad = isNullSt(dLocs2[2]?.rows[1]?.cells[3]);
+                wModel.viento = isNullSt(dLocs2[2]?.rows[1]?.cells[4]);
+                wModel.vientoMax = isNullSt(dLocs2[1]?.rows[1]?.cells[1]);
+                for (x of dLocs2[0]?.rows || []) {
+                    wModel.anterior.push({
+                        fecha: isNullSt(x.cells[0]),
+                        temperatura: isNullSt(x.cells[1])
+                    })
+                }
+                wModel.anterior.splice(0, 2);
+
+                console.log("wmodel", wModel);
+
+                displayModel(wModel);
+
+                backBtn.classList.remove('hidden');
+                resTxt.classList.add('hidden');
+
+
+            } catch (error) {
+                console.log("clickRow > dataGET error" + error.message, error.stack);
+                resTxt.innerText = "No se pudo realizar la consulta.";
+                backBtn.classList.remove('hidden');
+                locBtn.innerHTML = "Reintentar";
+                locBtn.disabled = false;
+                locBtn.classList.remove('hidden');
+                locRes.classList.add('hidden');
+                return;
+            }
+
+
+        } catch (error) {
+            console.log("clickRow > titleGET error" + error.message, error.stack);
+            resTxt.innerText = "No se pudo realizar la consulta.";
+            backBtn.classList.remove('hidden');
+            locBtn.innerHTML = "Reintentar";
+            locBtn.disabled = false;
+            locBtn.classList.remove('hidden');
+            locRes.classList.add('hidden');
+            return;
+        }
+    }
+
+    function displayModel(model) {
+        locRes.querySelectorAll("h2")[0].innerHTML = model.nombre;
+        locRes.querySelectorAll("h2")[1].innerHTML = model.fecha;
+        locRes.querySelector("a").href = model.url;
+
+        locRes.querySelector("#temp").innerHTML = model.temperatura + "°C";
+        locRes.querySelector("#tempSens").innerHTML = model.tempSens + "°C";
+        locRes.querySelector("#tempMax").innerHTML = model.tempMax + "°C";
+        locRes.querySelector("#tempMin").innerHTML = model.tempMin + "°C";
+        locRes.querySelector("#humedad").innerHTML = model.humedad + "%";
+        locRes.querySelector("#viento").innerHTML = model.viento + " km/h";
+        locRes.querySelector("#vientoMax").innerHTML = model.vientoMax + " km/h";
+
+        let html = "<table><tr><th>Fecha</th><th>Temperatura</th></tr>";
+        for (x of model.anterior) {
+            html += `<tr><td>${x.fecha}</td><td>${x.temperatura}°C</td></tr>`;
+        }
+        html += "</table>";
+        locRes.querySelector("#anterior").innerHTML = html;
+
+        locBtn.innerHTML = "Actualizar";
+        locBtn.disabled = false;
+        locBtn.classList.remove('hidden');
+    }
+</script>
+
+</html>

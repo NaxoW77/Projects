@@ -356,8 +356,9 @@
         </div>
         <div class="titleBox">
             <div class="titleSubBox">
-                <h1 id="dirTxt">Dirección: <span><span>Hacia San José.</span><button
-                    id="changeButton"><div>Girar</div></button></span></h1>
+                <h1 id="dirTxt">Dirección: <span><span>Hacia San José.</span><button id="changeButton">
+                            <div>Girar</div>
+                        </button></span></h1>
                 <h2 id="updTxt">Cargando...</h2>
             </div>
         </div>
@@ -463,34 +464,40 @@
             preciosElmnt.push(document.querySelector(`#p${i + 1}`));
             preciosTxt.push(document.querySelector(`#p${i + 1} > h2`))
         }
-        fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://globalviaruta27.com/tarifas'))
+        fetch('https://soft-base-e57d.ignacioapuy.workers.dev?url=https://globalviaruta27.com/tarifas', {
+                method: 'GET',
+                cache: 'no-store'})
             .then(response => {
                 return response.text()
             })
             .then(data => {
-                const parser = new DOMParser()
+                doc2 = new DOMParser().parseFromString(data, "text/html");
+                console.log(doc2);
+                let table = doc2.querySelector("table > tbody > tr");
+                let upd = doc2.querySelectorAll("h2")[1].textContent.split(" de ")[1];
 
-                doc2 = parser.parseFromString(data, "text/html");
-                doc2.documentElement.innerHTML = doc2.documentElement.innerHTML.replace(/\\&quot;|\\n|\\t/gm, "");
-                actualz = doc2.querySelector("#tarifas > h3").innerHTML;
-                for (var x = 0; x < 9; x++) {
-                    document.getElementsByClassName("item")[x].style.cursor="pointer";
-                    document.getElementsByClassName("item")[x].addEventListener("click", function (ev) { clicked(ev) });
-                    document.getElementsByClassName("item")[x].addEventListener("mouseover", function (ev) { this.style.filter += "brightness(1.15)" });
-                    document.getElementsByClassName("item")[x].addEventListener("mouseout", function (ev) { this.style.filter = this.style.filter.replace("brightness(1.15)", "") });
+                let tableRW = table.querySelectorAll("td");
+                let tablePrs = [];
+
+                console.log(upd);
+                for (let i of tableRW) {
+                    console.log(i);
+                    tablePrs.push(i.textContent);
                 }
-                for (var j = 0; j < 9; j++) {
-                    preciosTxt[j].innerHTML = "&#8353;" + doc2.querySelector(`.row-2 > .column-${(8 - j) + 2}`).innerHTML.replace(/¢/gm, "");
+                tablePrs = tablePrs.slice(1, 10).reverse();
+
+                for (let i = 0; i < 9; i++) {
+                    preciosElmnt[i].querySelector("h2").innerHTML = tablePrs[i].replace("¢", "₡");
+
+                    document.getElementsByClassName("item")[i].style.cursor = "pointer";
+                    document.getElementsByClassName("item")[i].addEventListener("click", function (ev) { clicked(ev) });
+                    document.getElementsByClassName("item")[i].addEventListener("mouseover", function (ev) { this.style.filter += "brightness(1.15)" });
+                    document.getElementsByClassName("item")[i].addEventListener("mouseout", function (ev) { this.style.filter = this.style.filter.replace("brightness(1.15)", "") });
                 }
 
-                dirTxt.querySelector("button").style.cursor="pointer";
-                dirTxt.querySelector("button").addEventListener("click", function(){changeRoute()});
-                var updMsg = actualz.split(" ");
-                updMsg = updMsg.slice(updMsg.length - 2, updMsg.length);
-                updMsg[0] = updMsg[0].toLowerCase().split("");
-                updMsg[0][0] = updMsg[0][0].toUpperCase();
-                updMsg[0] = updMsg[0].join("");
-                updTxt.innerHTML = `Última actualización: <span>${updMsg.join(" ")}.</span>`;
+                dirTxt.querySelector("button").style.cursor = "pointer";
+                dirTxt.querySelector("button").addEventListener("click", function () { changeRoute() });
+                updTxt.innerHTML = `Última actualización: <span>${upd}.</span>`;
             })
             .catch(error => {
                 console.error('Failed to fetch page: ', error)
@@ -505,8 +512,8 @@
     }
 
     function clicked(ev) {
-        let parntEl = ev.target;
-        let chldEl = ev.target.querySelector(".item>div")
+        let chldEl = ev.target.querySelector(".item > div")
+        console.log(chldEl);
         if (!chldEl.classList.contains("selected")) {
             chldEl.classList.add("selected");
         } else {
