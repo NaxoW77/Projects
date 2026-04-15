@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaction Time Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        section {
+            display: none;
+            z-index: 10;
+        }
+
+        #bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: background-color 2s;
+            background-color: #eee;
+        }
+
+        .instruction {
+            font-size: 2rem;
+        }
+
+        @keyframes finish {
+            0% {
+                filter: contrast(50%);
+            }
+
+            100% {
+                filter: contrast(87%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="bg"></div>
+
+    <section id="s1" style="display: block;">
+        <h1 class="instruction">Press [Click] or [Space] to begin</h1>
+    </section>
+
+    <section id="s2">
+        <h1 class="instruction">Wait for GREEN...</h1>
+    </section>
+
+    <section id="s3">
+        <h1>Results</h1>
+        <div id="result-display"></div>
+        <p>Press [Click] or [Space] to restart</p>
+    </section>
+
+    <script>
+        let startTime = 0;
+        let timeoutRef = null;
+        let mode = 0;
+        let bestTime = 0;
+
+        const s1 = document.querySelector("#s1");
+        const s2 = document.querySelector("#s2");
+        const s3 = document.querySelector("#s3");
+        const bg = document.querySelector("#bg");
+        const resultDisplay = document.querySelector("#result-display");
+
+        window.addEventListener('mousedown', (e) => { e.preventDefault(); next(); });
+        window.addEventListener('keydown', (e) => { if (e.key === " ") next(); });
+
+        function next() {
+            switch (mode) {
+                case 0:
+                    startTest();
+                    break;
+                case 1:
+                    tooEarly();
+                    break;
+                case 2:
+                    showResults();
+                    break;
+                case 3:
+                    resetTest();
+                    break;
+            }
+        }
+
+        function startTest() {
+            mode = 1;
+            s1.style.display = "none";
+            s3.style.display = "none";
+            s2.style.display = "block";
+            bg.style.backgroundColor = "rgb(255, 87, 34)";
+
+            const randomDelay = Math.floor(Math.random() * 3000) + 2000;
+
+            timeoutRef = setTimeout(() => {
+                mode = 2;
+                bg.style.transition = "background-color 0s";
+                bg.style.backgroundColor = "rgb(0, 230, 10)";
+                startTime = performance.now();
+            }, randomDelay);
+        }
+
+        function showResults() {
+            const endTime = performance.now();
+            let reactionTime = (endTime - startTime).toFixed(0);
+
+            mode = 3;
+            s2.style.display = "none";
+            s3.style.display = "block";
+            bg.style.transition = "background-color 0.7s";
+
+            if (reactionTime < 100) {
+                tooEarly();
+                return;
+            }
+
+            if (reactionTime < parseInt(localStorage.getItem('best')) || !localStorage.getItem('best')) {
+                localStorage.setItem('best', reactionTime);
+            }
+
+            let resultText = "";
+            let resultColor = "";
+            switch (true) {
+                case (reactionTime <= 156):
+                    resultText = "Incredible RT";
+                    resultColor = "rgb(170, 0, 255)";
+                    break;
+                case (reactionTime <= 173 && reactionTime > 156):
+                    resultText = "Very fast RT";
+                    resultColor = "rgb(0, 255, 255)";
+                    break;
+                case (reactionTime <= 198 && reactionTime > 173):
+                    resultText = "Fast RT";
+                    resultColor = "rgb(80, 80, 255)";
+                    break;
+                case (reactionTime <= 240 && reactionTime > 198):
+                    resultText = "Good RT";
+                    resultColor = "rgb(0, 255, 80)";
+                    break;
+                case (reactionTime <= 275 && reactionTime > 240):
+                    resultText = "Average RT";
+                    resultColor = "rgb(255, 255, 0)";
+                    break;
+                case (reactionTime > 275):
+                    resultText = "Slow RT";
+                    resultColor = "rgb(255, 0, 0)";
+                    break;
+            }
+
+            bg.style.backgroundColor = resultColor;
+            bg.style.animation = "finish 3s linear infinite alternate";
+
+            resultDisplay.innerHTML = `<h2 style="font-size: 3rem;">${reactionTime} ms</h2>` +
+
+                `<h2 style="font-size: 2rem;text-shadow: 1px 1px 5px #000;color: ${resultColor}">${resultText}</h2>` +
+                `<h3>Best Time: ${localStorage.getItem('best')} ms</h3>`;
+        }
+
+        function tooEarly() {
+            clearTimeout(timeoutRef);
+            mode = 3;
+            s2.style.display = "none";
+            s3.style.display = "block";
+            bg.style.backgroundColor = "#ffcdd2";
+            resultDisplay.innerHTML = `<h2>Too early</h2><p>Try again.</p>`;
+        }
+
+        function resetTest() {
+            bg.style.animation = "none";
+            startTest();
+        }
+    </script>
+</body>
+
+</html>
